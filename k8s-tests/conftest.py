@@ -18,9 +18,9 @@ def json_input(request):
         }
         test_path_name = request.path
         folder_path = os.path.dirname(test_path_name)
-        folder_path = folder_path.replace("/rules/", "/setup/")
+        folder_path = folder_path.replace("/check/", "/setup/")
         folder_path = folder_path.replace("/cleanup/", "/setup/")
-        folder_path = folder_path.replace("/answers/", "/setup/")
+        folder_path = folder_path.replace("/answer/", "/setup/")
         session_json_file = os.path.join(folder_path, "session.json")
 
         if os.path.exists(session_json_file):
