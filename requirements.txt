@@ -2,3 +2,5 @@ requests
 kubernetes
 boto3
 pytest
+pytest-order
+names_generator
