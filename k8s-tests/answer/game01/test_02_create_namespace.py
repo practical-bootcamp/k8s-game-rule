@@ -2,7 +2,7 @@ import logging
 
 import pytest
 from kubectrl_helper import build_kube_config, run_kubectl_command
-from rules.game01.test_02_create_namespace import Test02CreateNamespace
+from check.game01.test_02_create_namespace import Test02CreateNamespace
 from setup.game01.test_02_create_namespace import Test02CreateNamespaceSetup
 from cleanup.game01.test_02_create_namespace import Test02CreateNamespaceCleanup
 import os
