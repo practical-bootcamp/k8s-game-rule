@@ -4,3 +4,4 @@ boto3
 pytest
 pytest-order
 names_generator
+Jinja2
