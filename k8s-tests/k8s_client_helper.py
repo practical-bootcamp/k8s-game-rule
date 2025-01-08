@@ -1,5 +1,6 @@
 from kubernetes import client
 
+
 def configure_k8s_client(json_input):
     client_configuration = client.Configuration()
     client_configuration.host = json_input["host"]

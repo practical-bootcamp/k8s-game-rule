@@ -1,9 +1,10 @@
 import json
+import logging
 import os
 import random
-from jinja2 import Environment
+
 import pytest
-import logging
+from jinja2 import Environment
 from names_generator import generate_name
 
 
@@ -18,7 +19,7 @@ def random_number(from_number: int, to_number: int) -> str:
 func_dict = {
     "student_id": lambda: "123456789",
     "random_name": random_name,
-    "random_number": random_number
+    "random_number": random_number,
 }
 
 
@@ -30,16 +31,20 @@ def render(template):
     return template_string
 
 
-@pytest.fixture(scope='module', autouse=True)
+@pytest.fixture(scope="module", autouse=True)
 def json_input(request):
     # for local testing
     if not os.path.exists("/tmp/json_input.json"):
-        with open('/workspaces/k8s-game-rule/k8s-configure/endpoint.txt', 'r', encoding='utf-8') as endpoint_file:
+        with open(
+            "/workspaces/k8s-game-rule/k8s-configure/endpoint.txt",
+            "r",
+            encoding="utf-8",
+        ) as endpoint_file:
             host = endpoint_file.read().strip()
         result = {
-            "cert_file": '/workspaces/k8s-game-rule/k8s-configure/client.crt',
-            "key_file": '/workspaces/k8s-game-rule/k8s-configure/client.key',
-            "host": host
+            "cert_file": "/workspaces/k8s-game-rule/k8s-configure/client.crt",
+            "key_file": "/workspaces/k8s-game-rule/k8s-configure/client.key",
+            "host": host,
         }
         test_path_name = request.path
         folder_path = os.path.dirname(test_path_name)
@@ -52,10 +57,10 @@ def json_input(request):
 
         logging.info(task_session_file)
         if os.path.exists(session_json_file):
-            with open(session_json_file, 'r', encoding="utf-8") as file:
+            with open(session_json_file, "r", encoding="utf-8") as file:
                 session_json = json.load(file)
                 if os.path.exists(task_session_file):
-                    with open(task_session_file, 'r', encoding="utf-8") as file1:
+                    with open(task_session_file, "r", encoding="utf-8") as file1:
                         task_session = json.load(file1)
                         session_json.update(task_session)
 
@@ -66,7 +71,7 @@ def json_input(request):
             result.update(session_json)
         return result
     # for running in AWS lambda
-    with open("/tmp/json_input.json", 'r', encoding="utf-8") as file:
+    with open("/tmp/json_input.json", "r", encoding="utf-8") as file:
         json_str_input = file.read()
         result = json.loads(json_str_input)
     return result

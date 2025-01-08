@@ -16,8 +16,9 @@ class Test_01_default_namespace:
 
     def test_002_namespace_exists_with_kubectl(self, json_input):
         kube_config = build_kube_config(
-            json_input["cert_file"], json_input["key_file"], json_input["host"])
-        command = 'kubectl get namespace'
+            json_input["cert_file"], json_input["key_file"], json_input["host"]
+        )
+        command = "kubectl get namespace"
         result = run_kubectl_command(kube_config, command)
         logging.info(result)
         namespace = "default"
