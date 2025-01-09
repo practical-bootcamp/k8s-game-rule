@@ -1,1 +1,1 @@
-Create a namespace called '{namespace}'.
+Create a namespace called '{{namespace}}'.
