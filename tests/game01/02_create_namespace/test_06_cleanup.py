@@ -1,7 +1,8 @@
 import logging
 
 import pytest
-from kubectrl_helper import build_kube_config, run_kubectl_command
+
+from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 
 
 class TestCleanup:
