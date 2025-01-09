@@ -4,10 +4,10 @@ import pytest
 from kubectrl_helper import build_kube_config, run_kubectl_command
 
 
-class Test02CreateNamespaceCleanup:
+class TestCleanup:
 
-    @pytest.mark.order(99)
-    def test_999_cleanup(self, json_input):
+    @pytest.mark.order(6)
+    def test_cleanup(self, json_input):
         kube_config = build_kube_config(
             json_input["cert_file"], json_input["key_file"], json_input["host"]
         )

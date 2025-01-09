@@ -2,27 +2,21 @@ import logging
 import os
 
 import pytest
-from check.game01.test_02_create_namespace import Test02CreateNamespace
-from cleanup.game01.test_02_create_namespace import Test02CreateNamespaceCleanup
 from kubectrl_helper import build_kube_config, run_kubectl_command
-from setup.game01.test_02_create_namespace import Test02CreateNamespaceSetup
 
 
-class Test02CreateNamespaceSolution(
-    Test02CreateNamespaceSetup, Test02CreateNamespace, Test02CreateNamespaceCleanup
-):
+@pytest.mark.order(3)
+class TestAnswer:
 
     @pytest.mark.order(1)
-    def test_000_answer(self, json_input):
+    def test_answer(self, json_input):
         kube_config = build_kube_config(
             json_input["cert_file"], json_input["key_file"], json_input["host"]
         )
 
         current_folder = os.path.dirname(__file__)
-        template_path = os.path.join(
-            current_folder, "test_02_create_namespace.template.yaml"
-        )
-        yaml_path = os.path.join(current_folder, "test_02_create_namespace.gen.yaml")
+        template_path = os.path.join(current_folder, "answer.template.yaml")
+        yaml_path = os.path.join(current_folder, "answer.gen.yaml")
 
         with open(template_path, "r", encoding="utf-8") as file:
             yaml_content = file.read()
