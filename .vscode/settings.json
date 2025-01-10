@@ -4,5 +4,8 @@
         "--disable=C0115",
         "--disable=C0116",
     ],
-    "pylint.cwd": "${workspaceFolder}/k8s-tests"
+    "pylint.cwd": "${workspaceFolder}",
+    "python.testing.pytestArgs": [
+       "--import-mode=importlib","--rootdir=${workspaceFolder}"
+    ],
 }

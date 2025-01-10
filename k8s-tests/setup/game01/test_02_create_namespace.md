@@ -1,1 +1,0 @@
-Create a namespace called '{namespace}'.

@@ -21,9 +21,6 @@
 				"flake8.args": [
 					"--max-line-length=120"
 				],
-				"python.testing.pytestArgs": [
-					"k8s-tests"
-				],
 				"python.testing.unittestEnabled": false,
 				"python.testing.pytestEnabled": true,
 				"pylint.importStrategy": "useBundled",
