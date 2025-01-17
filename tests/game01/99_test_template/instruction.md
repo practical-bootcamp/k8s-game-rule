@@ -1,0 +1,1 @@
+Provide the valid k8s confidential and host address.
