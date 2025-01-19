@@ -5,13 +5,6 @@ import pytest
 from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 
 
-import logging
-
-import pytest
-
-from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
-
-
 class TestCleanup:
 
     @pytest.mark.order(6)
