@@ -5,6 +5,13 @@ import pytest
 from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 
 
+import logging
+
+import pytest
+
+from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
+
+
 class TestCleanup:
 
     @pytest.mark.order(6)
@@ -14,6 +21,8 @@ class TestCleanup:
         )
         pod_name = "nginx"
         pod_namespace = "default"
+        
+        # 删除 Pod 而不是命名空间
         command = f"kubectl delete pod {pod_name} -n {pod_namespace}"
         result = run_kubectl_command(kube_config, command)
         logging.info(result)
