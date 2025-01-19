@@ -23,6 +23,6 @@ class TestCleanup:
         pod_namespace = "default"
         
         # 删除 Pod 而不是命名空间
-        command = f"kubectl delete pod {pod_name} -n {pod_namespace}"
+        command = f"kubectl delete pod nginx -n default"
         result = run_kubectl_command(kube_config, command)
         logging.info(result)
