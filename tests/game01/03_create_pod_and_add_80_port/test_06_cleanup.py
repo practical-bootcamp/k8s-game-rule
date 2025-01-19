@@ -12,9 +12,7 @@ class TestCleanup:
         kube_config = build_kube_config(
             json_input["cert_file"], json_input["key_file"], json_input["host"]
         )
-        pod_name = "nginx"
-        pod_namespace = "default"
-        
+
         # 删除 Pod 而不是命名空间
         command = f"kubectl delete pod nginx -n default"
         result = run_kubectl_command(kube_config, command)
