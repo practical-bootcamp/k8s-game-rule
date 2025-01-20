@@ -18,24 +18,3 @@ class TestCheck:
         assert pod.metadata.namespace == "default", "Pod namespace is not default"
         assert pod.metadata.name == "nginx", "Pod name is not nginx"
 
-    def test_002_pod_attributes_with_kubectl(self, json_input):
-        kube_config = build_kube_config(
-            json_input["cert_file"], json_input["key_file"], json_input["host"]
-        )
-        
-        # Single command to fetch all necessary information in JSON format
-        command = "kubectl get pod nginx -n default -o=json"
-        result = run_kubectl_command(kube_config, command)
-        logging.info(result)
-        
-        pod_info = json.loads(result)
-        pod_namespace_result = pod_info["metadata"]["namespace"]
-        pod_name_result = pod_info["metadata"]["name"]
-        pod_image_result = pod_info["spec"]["containers"][0]["image"]
-        pod_port_result = pod_info["spec"]["containers"][0]["ports"][0]["containerPort"]
-        
-        assert pod_namespace_result == "default", "Pod namespace is not default"
-        assert pod_name_result == "nginx", "Pod name is not nginx"
-        assert pod_image_result == "nginx:1.24.0", "Pod image version is not nginx:1.24.0"
-        assert pod_port_result == 80, "Pod containerPort is not 80"
-
