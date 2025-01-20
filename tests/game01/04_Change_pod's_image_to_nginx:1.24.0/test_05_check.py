@@ -1,13 +1,11 @@
 import logging
-
 import pytest
-import json  # 确保导入库
+import json  # 确保导入 json 模块
 from tests.helper.k8s_client_helper import configure_k8s_client
 from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 
 @pytest.mark.order(5)
 class TestCheck:
-
     def test_001_pod_attributes_with_library(self, json_input):
         logging.debug(json_input)
         k8s_client = configure_k8s_client(json_input)
@@ -22,7 +20,9 @@ class TestCheck:
 
     def test_002_pod_attributes_with_kubectl(self, json_input):
         kube_config = build_kube_config(
-            json_input["cert_file"], json_input["key_file"], json_input["host"]
+            json_input["$client_certificate"],
+            json_input["$client_key"],
+            json_input["$endpoint"],
         )
         # 使用 kubectl 获取 Pod 信息，并以 JSON 格式输出
         command = "kubectl get pod nginx -n default -o json"
