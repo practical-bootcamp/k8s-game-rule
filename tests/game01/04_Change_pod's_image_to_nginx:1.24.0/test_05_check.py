@@ -1,6 +1,5 @@
 # test_05_check.py
 import logging
-import time
 
 import pytest
 from tests.helper.k8s_client_helper import configure_k8s_client
@@ -9,17 +8,17 @@ from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 @pytest.mark.order(5)
 class TestCheck:
 
-    def test_001_pod_image_updated(self, json_input):
+    def test_001_pod_image_is_correct(self, json_input):
         logging.debug(json_input)
         k8s_client = configure_k8s_client(json_input)
         pod_name = "nginx"
         pod_namespace = "default"
-        updated_image = "nginx:1.24.0"
+        expected_image = "nginx:1.24.0"
 
         pods = k8s_client.list_namespaced_pod(namespace=pod_namespace)
         pod_info = next((pod for pod in pods.items if pod.metadata.name == pod_name), None)
         assert pod_info is not None, f"Pod '{pod_name}' does not exist in namespace '{pod_namespace}'"
-        assert pod_info.spec.containers[0].image == updated_image, f"Pod image is not updated to '{updated_image}'"
+        assert pod_info.spec.containers[0].image == expected_image, f"Pod image is not '{expected_image}'"
 
     def test_002_pod_restarted(self, json_input):
         kube_config = build_kube_config(
