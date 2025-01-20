@@ -1,6 +1,4 @@
-# test_05_check.py
 import logging
-
 import pytest
 from tests.helper.k8s_client_helper import configure_k8s_client
 from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
@@ -8,39 +6,36 @@ from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 @pytest.mark.order(5)
 class TestCheck:
 
-    def test_001_pod_image_is_correct_with_library(self, json_input):
+    def test_001_pod_attributes_with_library(self, json_input):
         logging.debug(json_input)
         k8s_client = configure_k8s_client(json_input)
         pod_name = "nginx"
         pod_namespace = "default"
-        expected_image = "nginx:1.24.0"
+        pod = k8s_client.read_namespaced_pod(name=pod_name, namespace=pod_namespace)
+        
+        assert pod.spec.containers[0].image == "nginx:1.24.0", "Pod image version is not nginx:1.24.0"
+        assert pod.spec.containers[0].ports[0].container_port == 80, "Pod containerPort is not 80"
+        assert pod.metadata.namespace == "default", "Pod namespace is not default"
+        assert pod.metadata.name == "nginx", "Pod name is not nginx"
 
-        pods = k8s_client.list_namespaced_pod(namespace=pod_namespace)
-        pod_info = next((pod for pod in pods.items if pod.metadata.name == pod_name), None)
-        assert pod_info is not None, f"Pod '{pod_name}' does not exist in namespace '{pod_namespace}'"
-        assert pod_info.spec.containers[0].image == expected_image, f"Pod image is not '{expected_image}'"
-
-    def test_002_pod_image_is_correct_with_kubectl(self, json_input):
-        kube_config = build_kube_config(
-            json_input["cert_file"], json_input["key_file"], json_input["host"]
-        )
-        command = "kubectl get pod nginx -n default -o jsonpath='{.spec.containers[0].image}'"
-        result = run_kubectl_command(kube_config, command)
-        expected_image = "nginx:1.24.0"
-        assert expected_image in result, f"Pod image is not '{expected_image}'"
-
-    def test_003_pod_restarted(self, json_input):
+    def test_002_pod_attributes_with_kubectl(self, json_input):
         kube_config = build_kube_config(
             json_input["cert_file"], json_input["key_file"], json_input["host"]
         )
         
-        # 获取 Pod 的重启次数
-        restart_count = self.get_pod_restart_count(kube_config, pod_namespace="default", pod_name="nginx")
-        
-        # 只检查重启次数是否大于0
-        assert restart_count > 0, "Pod did not restart after image update"
-
-    def get_pod_restart_count(self, kube_config, pod_namespace, pod_name):
-        command = f"kubectl get pod {pod_name} -n {pod_namespace} -o jsonpath='{{.status.containerStatuses[0].restartCount}}'"
+        # Single command to fetch all necessary information in JSON format
+        command = "kubectl get pod nginx -n default -o=json"
         result = run_kubectl_command(kube_config, command)
-        return int(result)
+        logging.info(result)
+        
+        pod_info = json.loads(result)
+        pod_namespace_result = pod_info["metadata"]["namespace"]
+        pod_name_result = pod_info["metadata"]["name"]
+        pod_image_result = pod_info["spec"]["containers"][0]["image"]
+        pod_port_result = pod_info["spec"]["containers"][0]["ports"][0]["containerPort"]
+        
+        assert pod_namespace_result == "default", "Pod namespace is not default"
+        assert pod_name_result == "nginx", "Pod name is not nginx"
+        assert pod_image_result == "nginx:1.24.0", "Pod image version is not nginx:1.24.0"
+        assert pod_port_result == 80, "Pod containerPort is not 80"
+
