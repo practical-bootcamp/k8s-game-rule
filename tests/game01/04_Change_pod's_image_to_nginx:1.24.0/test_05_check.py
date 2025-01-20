@@ -1,6 +1,6 @@
 import logging
-
 import pytest
+import json  # 确保导入 json 模块
 from tests.helper.k8s_client_helper import configure_k8s_client
 from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 
@@ -20,35 +20,13 @@ class TestCheck:
 
     def test_002_pod_attributes_with_kubectl(self, json_input):
         kube_config = build_kube_config(
-            json_input["cert_file"], json_input["key_file"], json_input["host"]
+            json_input["$client_certificate"],
+            json_input["$client_key"],
+            json_input["$endpoint"],
         )
+        command = "kubectl get pod nginx -n default -o=jsonpath='{.spec.containers[0].image}'"
+        result = subprocess.run(command, shell=True, capture_output=True, text=True)
+        image = result.stdout.strip()
 
-        # 获取 Pod 的命名空间
-        command_namespace = "kubectl get pod nginx -n default -o=jsonpath='{.metadata.namespace}'"
-        namespace_result = subprocess.run(command_namespace, shell=True, capture_output=True, text=True)
-        namespace = namespace_result.stdout.strip()
-        logging.info(f"Namespace: {namespace}")
-        
-        # 获取 Pod 的名称
-        command_name = "kubectl get pod nginx -n default -o=jsonpath='{.metadata.name}'"
-        name_result = subprocess.run(command_name, shell=True, capture_output=True, text=True)
-        name = name_result.stdout.strip()
-        logging.info(f"Pod Name: {name}")
-        
-        # 获取 Pod 的镜像
-        command_image = "kubectl get pod nginx -n default -o=jsonpath='{.spec.containers[0].image}'"
-        image_result = subprocess.run(command_image, shell=True, capture_output=True, text=True)
-        image = image_result.stdout.strip()
-        logging.info(f"Pod Image: {image}")
-        
-        # 获取 Pod 的端口
-        command_port = "kubectl get pod nginx -n default -o=jsonpath='{.spec.containers[0].ports[0].containerPort}'"
-        port_result = subprocess.run(command_port, shell=True, capture_output=True, text=True)
-        port = port_result.stdout.strip()
-        logging.info(f"Pod Port: {port}")
-
-        result = run_kubectl_command(kube_config, command)
-        logging.info(result)
-        pod_name = "nginx"
-        assert pod_name in result, f"Pod '{pod_name}' does not exist in namespace 'default'"
+        assert image == "nginx:1.24.0", f"Pod image is not 'nginx:1.24.0', it is '{image}'"
 
