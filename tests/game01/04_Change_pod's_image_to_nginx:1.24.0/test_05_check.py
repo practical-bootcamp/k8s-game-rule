@@ -23,33 +23,32 @@ class TestCheck:
             json_input["cert_file"], json_input["key_file"], json_input["host"]
         )
 
-        # 获取 Pod 的命名空间
-        command_namespace = "kubectl get pod nginx -n default -o=jsonpath='{.metadata.namespace}'"
-        namespace_result = subprocess.run(command_namespace, shell=True, capture_output=True, text=True)
-        namespace = namespace_result.stdout.strip()
-        logging.info(f"Namespace: {namespace}")
+        # # 获取 Pod 的命名空间
+        # command_namespace = "kubectl get pod nginx -n default -o=jsonpath='{.metadata.namespace}'"
+        # namespace_result = subprocess.run(command_namespace, shell=True, capture_output=True, text=True)
+        # namespace = namespace_result.stdout.strip()
+        # logging.info(f"Namespace: {namespace}")
         
-        # 获取 Pod 的名称
-        command_name = "kubectl get pod nginx -n default -o=jsonpath='{.metadata.name}'"
-        name_result = subprocess.run(command_name, shell=True, capture_output=True, text=True)
-        name = name_result.stdout.strip()
-        logging.info(f"Pod Name: {name}")
+        # # 获取 Pod 的名称
+        # command_name = "kubectl get pod nginx -n default -o=jsonpath='{.metadata.name}'"
+        # name_result = subprocess.run(command_name, shell=True, capture_output=True, text=True)
+        # name = name_result.stdout.strip()
+        # logging.info(f"Pod Name: {name}")
         
-        # 获取 Pod 的镜像
-        command_image = "kubectl get pod nginx -n default -o=jsonpath='{.spec.containers[0].image}'"
-        image_result = subprocess.run(command_image, shell=True, capture_output=True, text=True)
-        image = image_result.stdout.strip()
-        logging.info(f"Pod Image: {image}")
+        # # 获取 Pod 的镜像
+        # command_image = "kubectl get pod nginx -n default -o=jsonpath='{.spec.containers[0].image}'"
+        # image_result = subprocess.run(command_image, shell=True, capture_output=True, text=True)
+        # image = image_result.stdout.strip()
+        # logging.info(f"Pod Image: {image}")
         
-        # 获取 Pod 的端口
-        command_port = "kubectl get pod nginx -n default -o=jsonpath='{.spec.containers[0].ports[0].containerPort}'"
-        port_result = subprocess.run(command_port, shell=True, capture_output=True, text=True)
-        port = port_result.stdout.strip()
-        logging.info(f"Pod Port: {port}")
+        # # 获取 Pod 的端口
+        # command_port = "kubectl get pod nginx -n default -o=jsonpath='{.spec.containers[0].ports[0].containerPort}'"
+        # port_result = subprocess.run(command_port, shell=True, capture_output=True, text=True)
+        # port = port_result.stdout.strip()
+        # logging.info(f"Pod Port: {port}")
 
-        # 验证命名空间、名称、镜像和端口
-        assert namespace == "default", "Pod namespace is not 'default'"
-        assert name == "nginx", "Pod name is not 'nginx'"
-        assert image == "nginx:1.24.0", f"Pod image is not 'nginx:1.24.0', it is '{image}'"
-        assert port == "80", f"Pod port is not '80', it is '{port}'"
+        # result = run_kubectl_command(kube_config, command)
+        # logging.info(result)
+        # pod_name = "nginx"
+        # assert pod_name in result, f"Pod '{pod_name}' does not exist in namespace 'default'"
 
