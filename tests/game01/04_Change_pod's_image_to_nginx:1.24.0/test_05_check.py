@@ -8,7 +8,7 @@ from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 @pytest.mark.order(5)
 class TestCheck:
 
-    def test_001_pod_image_is_correct(self, json_input):
+    def test_001_pod_image_is_correct_with_library(self, json_input):
         logging.debug(json_input)
         k8s_client = configure_k8s_client(json_input)
         pod_name = "nginx"
@@ -20,7 +20,16 @@ class TestCheck:
         assert pod_info is not None, f"Pod '{pod_name}' does not exist in namespace '{pod_namespace}'"
         assert pod_info.spec.containers[0].image == expected_image, f"Pod image is not '{expected_image}'"
 
-    def test_002_pod_restarted(self, json_input):
+    def test_002_pod_image_is_correct_with_kubectl(self, json_input):
+        kube_config = build_kube_config(
+            json_input["cert_file"], json_input["key_file"], json_input["host"]
+        )
+        command = "kubectl get pod nginx -n default -o jsonpath='{.spec.containers[0].image}'"
+        result = run_kubectl_command(kube_config, command)
+        expected_image = "nginx:1.24.0"
+        assert expected_image in result, f"Pod image is not '{expected_image}'"
+
+    def test_003_pod_restarted(self, json_input):
         kube_config = build_kube_config(
             json_input["cert_file"], json_input["key_file"], json_input["host"]
         )
