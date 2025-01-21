@@ -18,22 +18,22 @@ class TestCheck:
             assert pod_name in pod_list, f"Pod '{pod_name}' does not exist in namespace '{pod_namespace}'"
             assert pod_list[pod_name]["app"] == "v1", f"Pod '{pod_name}' does not have label 'app=v1'"
 
-    def test_002_pods_exist_with_kubectl(self, json_input):
-        kube_config = build_kube_config(
-            json_input["cert_file"], 
-            json_input["key_file"],
-            json_input["host"]
-        )
-        command = "kubectl get pods -n default -o json"
-        result = run_kubectl_command(kube_config, command)
-        logging.info(result)
+    # def test_002_pods_exist_with_kubectl(self, json_input):
+    #     kube_config = build_kube_config(
+    #         json_input["cert_file"], 
+    #         json_input["key_file"],
+    #         json_input["host"]
+    #     )
+    #     command = "kubectl get pods -n default -o json"
+    #     result = run_kubectl_command(kube_config, command)
+    #     logging.info(result)
         
-        pod_data = json.loads(result)
-        pod_names = ["nginx1", "nginx2", "nginx3"]
+    #     pod_data = json.loads(result)
+    #     pod_names = ["nginx1", "nginx2", "nginx3"]
 
-        for pod in pod_data["items"]:
-            if pod["metadata"]["name"] in pod_names:
-                pod_names.remove(pod["metadata"]["name"])
-                assert pod["metadata"]["labels"]["app"] == "v1", f"Pod '{pod['metadata']['name']}' does not have label 'app=v1'"
+    #     for pod in pod_data["items"]:
+    #         if pod["metadata"]["name"] in pod_names:
+    #             pod_names.remove(pod["metadata"]["name"])
+    #             assert pod["metadata"]["labels"]["app"] == "v1", f"Pod '{pod['metadata']['name']}' does not have label 'app=v1'"
         
-        assert not pod_names, "Some of the required Pods are missing"
+    #     assert not pod_names, "Some of the required Pods are missing"
