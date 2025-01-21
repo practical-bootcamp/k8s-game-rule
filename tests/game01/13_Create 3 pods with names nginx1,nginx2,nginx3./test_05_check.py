@@ -41,4 +41,5 @@ class TestCheck:
             if pod["metadata"]["name"] in pod_names:
                 pod_names.remove(pod["metadata"]["name"])
                 assert pod["metadata"]["labels"]["app"] == "v1", f"Pod '{pod['metadata']['name']}' does not have label 'app=v1'"
+        
         assert not pod_names, "Some of the required Pods are missing"
