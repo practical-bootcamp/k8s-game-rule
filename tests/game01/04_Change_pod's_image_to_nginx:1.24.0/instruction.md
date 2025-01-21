@@ -1,1 +1,1 @@
-Change pod's image to nginx:1.24.0. Observe that the container will be restarted as soon as the image gets pulled.
+Change pod's image to nginx:1.24.0. 
