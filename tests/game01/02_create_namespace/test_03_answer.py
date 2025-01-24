@@ -2,6 +2,7 @@ import logging
 import os
 
 import pytest
+from jinja2 import Environment
 
 from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 
@@ -16,9 +17,11 @@ def test_answer(json_input):
     template_path = os.path.join(current_folder, "answer.template.yaml")
     yaml_path = os.path.join(current_folder, "answer.gen.yaml")
 
+    env = Environment()
+    jinja_template = env.from_string(open(template_path, "r", encoding="utf-8").read())
+
     with open(template_path, "r", encoding="utf-8") as file:
-        yaml_content = file.read()
-        yaml_content = yaml_content.replace("{namespace}", json_input["namespace"])
+        yaml_content = jinja_template.render(json_input)
         with open(yaml_path, "w", encoding="utf-8") as file:
             file.write(yaml_content)
 
