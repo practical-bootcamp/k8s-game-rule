@@ -1,9 +1,6 @@
 import logging
-
 import pytest
-
 from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
-
 
 class TestCleanup:
 
@@ -14,8 +11,8 @@ class TestCleanup:
             json_input["cert_file"], json_input["key_file"], json_input["host"]
         )
         
-        pod_namespace = "default" 
-        pod_names = ["nginx1", "nginx2", "nginx3"]
+        pod_namespace = "default"
+        pod_name = "nginx1"
         
         # 删除 Pod 的命令 
         command = f"kubectl delete pod {pod_name} -n {pod_namespace}"
