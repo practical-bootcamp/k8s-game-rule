@@ -25,10 +25,10 @@ class TestCheck:
         command = "kubectl get pod nginx -n default -o json"
         result = run_kubectl_command(kube_config, command)
         
-        if result.returncode != 0:
-            logging.error(f"Command failed with error: {result.stderr}")
+        if "error" in result.lower():
+            logging.error(f"Command failed with error: {result}")
         else:
-            json_output = result.stdout.strip()
+            json_output = result.strip()
             logging.info(json_output)
         
             pod_data = json.loads(json_output)
