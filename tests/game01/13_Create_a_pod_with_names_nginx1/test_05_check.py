@@ -1,7 +1,6 @@
 import logging
 import pytest
 import json
-import subprocess
 from tests.helper.k8s_client_helper import configure_k8s_client
 from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 
@@ -19,17 +18,15 @@ class TestCheck:
 
     def test_002_pod_label_with_kubectl(self, json_input):
         kube_config = build_kube_config(
-            json_input["$client_certificate"],
-            json_input["$client_key"],
-            json_input["$endpoint"],
+            json_input["cert_file"], json_input["key_file"], json_input["host"]
         )
         command = "kubectl get pod nginx1 -n default -o json"
-        result = subprocess.run(command, shell=True, capture_output=True, text=True)
+        result = run_kubectl_command(kube_config, command)
         
-        if result.returncode != 0:
-            logging.error(f"Command failed with error: {result.stderr}")
+        if "error" in result.lower():
+            logging.error(f"Command failed with error: {result}")
         else:
-            json_output = result.stdout.strip()
+            json_output = result.strip()
             logging.info(json_output)
         
             pod_data = json.loads(json_output)
