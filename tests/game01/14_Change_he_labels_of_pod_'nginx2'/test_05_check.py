@@ -15,9 +15,8 @@ class TestCheck:
 
     def test_002_pod_labels_with_kubectl(self, json_input):
         kube_config = build_kube_config(
-            json_input["cert_file"],
-            json_input["key_file"],
-            json_input["host"]
+            json_input["cert_file"], json_input["key_file"], json_input["host"]
+        )
         )
         command = f"kubectl get pod {pod_name} -n {pod_namespace} -o json"
         result = run_kubectl_command(kube_config, command)

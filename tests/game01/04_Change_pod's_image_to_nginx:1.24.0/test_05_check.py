@@ -21,9 +21,7 @@ class TestCheck:
 
     def test_002_pod_attributes_with_kubectl(self, json_input):
         kube_config = build_kube_config(
-            json_input["$client_certificate"],
-            json_input["$client_key"],
-            json_input["$endpoint"],
+            json_input["cert_file"], json_input["key_file"], json_input["host"]
         )
         command = "kubectl get pod nginx -n default -o json"
         result = subprocess.run(command, shell=True, capture_output=True, text=True)
