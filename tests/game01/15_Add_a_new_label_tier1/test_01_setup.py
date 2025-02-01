@@ -30,7 +30,7 @@ def test_setup(json_input):
     pod_manifests = [
         create_pod_manifest("nginx1", "v1", pod_namespace),
         create_pod_manifest("nginx2", "v2", pod_namespace),
-        create_pod_manifest("nginx3", "v1", pod_namespace)
+        create_pod_manifest("nginx3", "v3", pod_namespace)
     ]
 
     for pod_manifest in pod_manifests:
