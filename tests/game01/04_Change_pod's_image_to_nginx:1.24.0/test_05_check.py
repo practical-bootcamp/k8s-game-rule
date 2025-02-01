@@ -24,7 +24,7 @@ class TestCheck:
             json_input["cert_file"], json_input["key_file"], json_input["host"]
         )
         command = "kubectl get pod nginx -n default -o json"
-        result = subprocess.run(command, shell=True, capture_output=True, text=True)
+        result = subprocess.run(kube_config, command, shell=True, capture_output=True, text=True)
         
         if result.returncode != 0:
             logging.error(f"Command failed with error: {result.stderr}")
