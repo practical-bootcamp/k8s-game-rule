@@ -1,4 +1,3 @@
-import subprocess
 import logging
 import pytest
 import json
@@ -24,7 +23,7 @@ class TestCheck:
             json_input["cert_file"], json_input["key_file"], json_input["host"]
         )
         command = "kubectl get pod nginx -n default -o json"
-        result = subprocess.run(kube_config, command, shell=True, capture_output=True, text=True)
+        result = run_kubectl_command(kube_config, command)
         
         if result.returncode != 0:
             logging.error(f"Command failed with error: {result.stderr}")
