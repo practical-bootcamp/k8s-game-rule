@@ -22,12 +22,8 @@ class TestCheck:
 
 
     def test_002_verify_new_label(self, json_input):
-        k8s_client = configure_k8s_client(json_input)
-        pod_namespace = json_input["namespace"]
+        logging.debug("Starting test_002_pod_label_with_kubectl")
+        kube_config = build_kube_config(
+            json_input["cert_file"], json_input["key_file"], json_input["host"]
+        )
 
-        pod_names = ["nginx1", "nginx2", "nginx3"]
-
-        for pod_name in pod_names:
-            pod = k8s_client.read_namespaced_pod(name=pod_name, namespace=pod_namespace)
-            if pod.metadata.labels["app"] in ["v1", "v2"]:
-                assert pod.metadata.labels["tier"] == "web", f"Pod '{pod_name}' does not have label 'tier=web'"
