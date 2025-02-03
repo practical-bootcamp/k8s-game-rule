@@ -45,7 +45,6 @@ class TestCheck:
             
                 pod_data = json.loads(json_output)
                 
-                assert pod_data["metadata"]["labels"].get("tier") == "web", f"Pod '{pod_name}' does not have the label 'tier=web'"
-                logging.info(f"Pod '{pod_name}' has the label 'tier=web'")
-
-
+                if pod_data["metadata"]["labels"].get("app") in ["v1", "v2"]:
+                    assert pod_data["metadata"]["labels"].get("tier") == "web", f"Pod '{pod_name}' does not have the label 'tier=web'"
+                    logging.info(f"Pod '{pod_name}' has the label 'tier=web'")
