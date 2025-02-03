@@ -21,7 +21,6 @@ class TestCheck:
                 k8s_client.patch_namespaced_pod(name=pod_name, namespace=pod_namespace, body={"metadata": {"annotations": updated_annotations}})
                 logging.info(f"Updated Annotations for Pod: {pod_name}")
 
-
     def test_002_verify_new_annotation(self, json_input):
         logging.debug("Starting test_002_verify_new_annotation")
         kube_config = build_kube_config(
