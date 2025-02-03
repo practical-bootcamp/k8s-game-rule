@@ -2,7 +2,7 @@
 import logging
 import pytest
 import json
-from kubernetes.client.rest import ApiException
+from subprocess import CalledProcessError
 from tests.helper.k8s_client_helper import configure_k8s_client
 from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 
@@ -48,8 +48,8 @@ class TestCheck:
                 pod_data = json.loads(json_output)
                 assert "app" not in pod_data["metadata"]["labels"], f"Pod '{pod_name}' still has the label 'app'"
                 logging.info(f"Pod '{pod_name}' does not have the label 'app'")
-            except ApiException as e:
-                if e.status == 404:
+            except CalledProcessError as e:
+                if 'not found' in str(e):
                     logging.info(f"Pod '{pod_name}' not found, skipping check.")
                 else:
                     raise
