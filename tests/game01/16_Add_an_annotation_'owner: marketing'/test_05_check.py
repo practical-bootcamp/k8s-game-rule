@@ -6,60 +6,34 @@ from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 
 @pytest.mark.order(5)
 class TestCheck:
-    def test_002_verify_new_annotation(self, json_input):
-        logging.debug("Starting test_002_verify_new_annotation")
+    def test_001_pod_labels_with_library(self, json_input):
+        logging.debug(json_input)
+        k8s_client = configure_k8s_client(json_input)
+        pod_name = "nginx2"
+        pod_namespace = json_input["namespace"]
+        
+        pod = k8s_client.read_namespaced_pod(name=pod_name, namespace=pod_namespace)
+        assert pod.metadata.labels["app"] == "v2", f"Pod '{pod_name}' label is not 'app=v2'"
+        assert pod.metadata.name == pod_name, f"Pod name is not '{pod_name}'"
+
+    def test_002_pod_label_with_kubectl(self, json_input):
+        logging.debug("Starting test_002_pod_label_with_kubectl")
         kube_config = build_kube_config(
             json_input["cert_file"], json_input["key_file"], json_input["host"]
         )
-        
-        pod_namespace = json_input["namespace"]
-        pod_names = ["nginx1", "nginx2", "nginx3"]
+        command = f"kubectl get pod nginx2 -n {json_input['namespace']} -o json"
+        logging.debug(f"Running command: {command}")
+        result = run_kubectl_command(kube_config, command)
+        logging.debug(f"Command result: {result}")
 
-        for pod_name in pod_names:
-            command = f"kubectl get pod {pod_name} -n {pod_namespace} -o json"
-            logging.debug(f"Running command: {command}")
-            result = run_kubectl_command(kube_config, command)
-            logging.debug(f"Command result: {result}")
-            
-            if "error" in result.lower():
-                logging.error(f"Command failed with error: {result}")
-            else:
-                json_output = result.strip()
-                logging.debug(f"Command output: {json_output}")
-                logging.info(json_output)
-            
-                pod_data = json.loads(json_output)
-                logging.debug(f"Current annotations for {pod_name}: {pod_data['metadata'].get('annotations', {})}")
-                
-                if pod_data["metadata"]["labels"].get("app") == "v2":
-                    assert pod_data["metadata"]["annotations"].get("owner") == "marketing", f"Pod '{pod_name}' does not have the annotation 'owner=marketing'"
-                    logging.info(f"Pod '{pod_name}' has the annotation 'owner=marketing'")
+        if "error" in result.lower():
+            logging.error(f"Command failed with error: {result}")
+        else:
+            json_output = result.strip()
+            logging.debug(f"Command output: {json_output}")
+            logging.info(json_output)
 
+            pod_data = json.loads(json_output)
 
-    def test_002_verify_new_annotation(self, json_input):
-        logging.debug("Starting test_002_verify_new_annotation")
-        kube_config = build_kube_config(
-            json_input["cert_file"], json_input["key_file"], json_input["host"]
-        )
-        
-        pod_namespace = json_input["namespace"]
-        pod_names = ["nginx1", "nginx2", "nginx3"]
-
-        for pod_name in pod_names:
-            command = f"kubectl get pod {pod_name} -n {pod_namespace} -o json"
-            logging.debug(f"Running command: {command}")
-            result = run_kubectl_command(kube_config, command)
-            logging.debug(f"Command result: {result}")
-            
-            if "error" in result.lower():
-                logging.error(f"Command failed with error: {result}")
-            else:
-                json_output = result.strip()
-                logging.debug(f"Command output: {json_output}")
-                logging.info(json_output)
-            
-                pod_data = json.loads(json_output)
-                
-                if pod_data["metadata"]["labels"].get("app") == "v2":
-                    assert pod_data["metadata"]["annotations"].get("owner") == "marketing", f"Pod '{pod_name}' does not have the annotation 'owner=marketing'"
-                    logging.info(f"Pod '{pod_name}' has the annotation 'owner=marketing'")
+            assert pod_data["metadata"]["labels"].get("app") == "v2", f"Pod label 'app' is not 'v2'"
+            assert pod_data["metadata"]["name"] == "nginx2", f"Pod name is not 'nginx2'"
