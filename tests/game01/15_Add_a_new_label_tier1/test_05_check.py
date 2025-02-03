@@ -22,8 +22,30 @@ class TestCheck:
 
 
     def test_002_verify_new_label(self, json_input):
-        logging.debug("Starting test_002_pod_label_with_kubectl")
+        logging.debug("Starting test_002_verify_new_label")
         kube_config = build_kube_config(
             json_input["cert_file"], json_input["key_file"], json_input["host"]
         )
+        
+        pod_namespace = json_input["namespace"]
+        pod_names = ["nginx1", "nginx2", "nginx3"]
+
+        for pod_name in pod_names:
+            command = f"kubectl get pod {pod_name} -n {pod_namespace} -o json"
+            logging.debug(f"Running command: {command}")
+            result = run_kubectl_command(kube_config, command)
+            logging.debug(f"Command result: {result}")
+            
+            if "error" in result.lower():
+                logging.error(f"Command failed with error: {result}")
+            else:
+                json_output = result.strip()
+                logging.debug(f"Command output: {json_output}")
+                logging.info(json_output)
+            
+                pod_data = json.loads(json_output)
+                
+                assert pod_data["metadata"]["labels"].get("tier") == "web", f"Pod '{pod_name}' does not have the label 'tier=web'"
+                logging.info(f"Pod '{pod_name}' has the label 'tier=web'")
+
 
