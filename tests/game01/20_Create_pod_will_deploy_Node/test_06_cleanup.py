@@ -13,7 +13,7 @@ class TestCleanup:
         )
         
         pod_namespace = json_input["namespace"]
-        pod_names = ["nginx1", "nginx2", "nginx3"]
+        pod_names = ["nginx1", "nginx2", "nginx3", "gpu-pod"]
         
         for pod_name in pod_names:
             # 删除 Pod 的命令 
