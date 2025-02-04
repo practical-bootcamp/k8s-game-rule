@@ -56,8 +56,3 @@ class TestCheck:
             labels = node_data["metadata"].get("labels", {})
             assert labels.get("accelerator") == "nvidia-tesla-p100", f"Pod '{pod_name}' is not scheduled on a node with label 'accelerator=nvidia-tesla-p100'"
             logging.info(f"Pod '{pod_name}' is scheduled on a node with label 'accelerator=nvidia-tesla-p100'")
-        except CalledProcessError as e:
-            if 'not found' in str(e).lower():
-                logging.info(f"Pod '{pod_name}' or Node '{node_name}' not found, skipping check.")
-            else:
-                raise
