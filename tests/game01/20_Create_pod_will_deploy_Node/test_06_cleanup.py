@@ -2,6 +2,7 @@
 import logging
 import pytest
 from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
+from tests.helper.k8s_client_helper import configure_k8s_client
 
 class TestCleanup:
 
@@ -24,3 +25,17 @@ class TestCleanup:
             
             logging.info(result)
             assert "deleted" in result.lower(), f"Failed to delete Pod '{pod_name}' in namespace '{pod_namespace}'"
+        
+        # 删除节点标签
+        k8s_client = configure_k8s_client(json_input)
+        node_name = "minikube"
+        
+        body = {
+            "metadata": {
+                "labels": {
+                    "accelerator": None
+                }
+            }
+        }
+        response = k8s_client.patch_node(node_name, body)
+        logging.info(f"Removed label 'accelerator' from Node '{node_name}', response: {response}")
