@@ -12,14 +12,12 @@ class TestCheck:
         pod_namespace = json_input["namespace"]
         
         pod_name = "gpu-pod"
-
-        try:
-            pod = k8s_client.read_namespaced_pod(name=pod_name, namespace=pod_namespace)
-            node_name = pod.spec.node_name
-            node = k8s_client.read_node(name=node_name)
-            labels = node.metadata.labels if node.metadata.labels is not None else {}
-            assert labels.get("accelerator") == "nvidia-tesla-p100", f"Pod '{pod_name}' is not scheduled on a node with label 'accelerator=nvidia-tesla-p100'"
-            logging.info(f"Pod '{pod_name}' is scheduled on a node with label 'accelerator=nvidia-tesla-p100'")
+        pod = k8s_client.read_namespaced_pod(name=pod_name, namespace=pod_namespace)
+        node_name = pod.spec.node_name
+        node = k8s_client.read_node(name=node_name)
+        labels = node.metadata.labels if node.metadata.labels is not None else {}
+        assert labels.get("accelerator") == "nvidia-tesla-p100", f"Pod '{pod_name}' is not scheduled on a node with label 'accelerator=nvidia-tesla-p100'"
+        logging.info(f"Pod '{pod_name}' is scheduled on a node with label 'accelerator=nvidia-tesla-p100'")
 
     def test_002_verify_pod_scheduled_on_correct_node_with_kubectl(self, json_input):
         logging.debug("Starting test_002_verify_pod_scheduled_on_correct_node_with_kubectl")
@@ -30,29 +28,27 @@ class TestCheck:
         pod_namespace = json_input["namespace"]
         pod_name = "gpu-pod"
 
-        try:
-            command = f"kubectl get pod {pod_name} -n {pod_namespace} -o json"
-            logging.debug(f"Running command: {command}")
-            result = run_kubectl_command(kube_config, command)
-            logging.debug(f"Command result: {result}")
-            
-            json_output = result.strip()
-            logging.debug(f"Command output: {json_output}")
-            logging.info(json_output)
+        command = f"kubectl get pod {pod_name} -n {pod_namespace} -o json"
+        logging.debug(f"Running command: {command}")
+        result = run_kubectl_command(kube_config, command)
+        logging.debug(f"Command result: {result}")
         
-            pod_data = json.loads(json_output)
-            node_name = pod_data["spec"]["nodeName"]
-
-            command = f"kubectl get node {node_name} -o json"
-            logging.debug(f"Running command: {command}")
-            result = run_kubectl_command(kube_config, command)
-            logging.debug(f"Command result: {result}")
-            
-            json_output = result.strip()
-            logging.debug(f"Command output: {json_output}")
-            logging.info(json_output)
+        json_output = result.strip()
+        logging.debug(f"Command output: {json_output}")
+        logging.info(json_output)
         
-            node_data = json.loads(json_output)
-            labels = node_data["metadata"].get("labels", {})
-            assert labels.get("accelerator") == "nvidia-tesla-p100", f"Pod '{pod_name}' is not scheduled on a node with label 'accelerator=nvidia-tesla-p100'"
-            logging.info(f"Pod '{pod_name}' is scheduled on a node with label 'accelerator=nvidia-tesla-p100'")
+        pod_data = json.loads(json_output)
+        node_name = pod_data["spec"]["nodeName"]
+        command = f"kubectl get node {node_name} -o json"
+        logging.debug(f"Running command: {command}")
+        result = run_kubectl_command(kube_config, command)
+        logging.debug(f"Command result: {result}")
+            
+        json_output = result.strip()
+        logging.debug(f"Command output: {json_output}")
+        logging.info(json_output)
+        
+        node_data = json.loads(json_output)
+        labels = node_data["metadata"].get("labels", {})
+        assert labels.get("accelerator") == "nvidia-tesla-p100", f"Pod '{pod_name}' is not scheduled on a node with label 'accelerator=nvidia-tesla-p100'"
+        logging.info(f"Pod '{pod_name}' is scheduled on a node with label 'accelerator=nvidia-tesla-p100'")
