@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: config
-data:
-  special: |
-    var3=val3
-    var4=val4
