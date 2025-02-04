@@ -1,4 +1,5 @@
 # test_06_cleanup.py
+# test_06_cleanup.py
 import logging
 import pytest
 from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
@@ -12,15 +13,14 @@ class TestCleanup:
             json_input["cert_file"], json_input["key_file"], json_input["host"]
         )
         
-        pod_namespace = json_input["namespace"]
-        pod_names = ["nginx1", "nginx2", "nginx3"]
+        namespace = json_input["namespace"]
         
-        for pod_name in pod_names:
-            # 删除 Pod 的命令 
-            command = f"kubectl delete pod {pod_name} -n {pod_namespace}"
-            
-            # 运行命令并记录结果
-            result = run_kubectl_command(kube_config, command)
-            
-            logging.info(result)
-            assert "deleted" in result.lower(), f"Failed to delete Pod '{pod_name}' in namespace '{pod_namespace}'"
+        # 删除 ConfigMap 的命令
+        configmap_name = "config"
+        command_configmap = f"kubectl delete configmap {configmap_name} -n {namespace}"
+        
+        # 运行命令并记录结果
+        result_configmap = run_kubectl_command(kube_config, command_configmap)
+        
+        logging.info(result_configmap)
+        assert "deleted" in result_configmap.lower(), f"Failed to delete ConfigMap '{configmap_name}' in namespace '{namespace}'"
