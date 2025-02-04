@@ -20,7 +20,7 @@ def test_setup(json_input):
     # 检查节点是否存在
     node = k8s_client.read_node(name=node_name)
     logging.info(f"Node '{node_name}' exists.")
-        
+
     # 为节点添加标签
     labels = {
         "accelerator": "nvidia-tesla-p100"
