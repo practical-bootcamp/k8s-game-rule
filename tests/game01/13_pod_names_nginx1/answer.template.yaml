@@ -4,8 +4,9 @@ metadata:
   name: nginx1
   labels:
     app: v1
-  namespace: {namespace}
 spec:
   containers:
   - name: nginx
-    image: nginx:latest
+    image: nginx
+    ports:
+    - containerPort: 80
