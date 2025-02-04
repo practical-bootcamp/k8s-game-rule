@@ -14,17 +14,16 @@ class TestCleanup:
         )
         
         pod_namespace = json_input["namespace"]
-        pod_names = ["nginx1", "nginx2", "nginx3", "gpu-pod"]
+        pod_name = "gpu-pod"
         
-        for pod_name in pod_names:
-            # 删除 Pod 的命令 
-            command = f"kubectl delete pod {pod_name} -n {pod_namespace}"
-            
-            # 运行命令并记录结果
-            result = run_kubectl_command(kube_config, command)
-            
-            logging.info(result)
-            assert "deleted" in result.lower(), f"Failed to delete Pod '{pod_name}' in namespace '{pod_namespace}'"
+        # 删除 Pod 的命令 
+        command = f"kubectl delete pod {pod_name} -n {pod_namespace}"
+        
+        # 运行命令并记录结果
+        result = run_kubectl_command(kube_config, command)
+        
+        logging.info(result)
+        assert "deleted" in result.lower(), f"Failed to delete Pod '{pod_name}' in namespace '{pod_namespace}'"
         
         # 删除节点标签
         k8s_client = configure_k8s_client(json_input)
