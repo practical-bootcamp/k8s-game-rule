@@ -1,38 +1,17 @@
-# test_01_setup.py
 import pytest
 import logging
 from tests.helper.k8s_client_helper import configure_k8s_client
-
-def create_pod_manifest(pod_name, label, namespace):
-    return {
-        "apiVersion": "v1",
-        "kind": "Pod",
-        "metadata": {
-            "name": pod_name,
-            "labels": {
-                "app": label
-            },
-            "namespace": namespace
-        },
-        "spec": {
-            "containers": [{
-                "name": "nginx",
-                "image": "nginx:latest"
-            }]
-        }
-    }
+from tests.helper.kubectrl_helper import run_kubectl_command
 
 @pytest.mark.order(1)
 def test_setup(json_input):
     k8s_client = configure_k8s_client(json_input)
-    pod_namespace = json_input["namespace"]
 
-    pod_manifests = [
-        create_pod_manifest("nginx1", "v1", pod_namespace),
-        create_pod_manifest("nginx2", "v2", pod_namespace),
-        create_pod_manifest("nginx3", "v3", pod_namespace)
-    ]
+    # 创建文件并加载内容
+    command_create_file = "echo -e 'var3=val3\nvar4=val4' > config4.txt"
+    result_create_file = run_kubectl_command(json_input, command_create_file)
+    logging.info(f"Created file 'config4.txt' with content. Result: {result_create_file}")
 
-    for pod_manifest in pod_manifests:
-        response = k8s_client.create_namespaced_pod(namespace=pod_namespace, body=pod_manifest)
-        logging.info(f"Created Pod: {pod_manifest['metadata']['name']} response: {response}")
+# 运行测试
+if __name__ == "__main__":
+    pytest.main()
