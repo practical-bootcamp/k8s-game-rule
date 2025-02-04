@@ -1,1 +1,0 @@
-Create and display a configmap from a .env file
