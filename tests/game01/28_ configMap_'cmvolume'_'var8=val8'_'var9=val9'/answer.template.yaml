@@ -3,6 +3,17 @@ kind: Pod
 metadata:
   name: nginx-pod
 spec:
+  securityContext:
+    runAsUser: 101
+  containers:
+  - name: nginx
+    image: nginx
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+spec:
   containers:
   - name: nginx
     image: nginx
