@@ -1,13 +1,10 @@
 apiVersion: v1
-kind: Pod
+kind: ConfigMap
 metadata:
-  name: nginx-pod
-spec:
-  securityContext:
-    runAsUser: 101
-  containers:
-  - name: nginx
-    image: nginx
+  name: cmvolume
+data:
+  var8: val8
+  var9: val9
 ---
 apiVersion: v1
 kind: Pod
