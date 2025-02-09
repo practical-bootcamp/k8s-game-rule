@@ -11,16 +11,18 @@ class TestCleanup:
         kube_config = build_kube_config(
             json_input["cert_file"], json_input["key_file"], json_input["host"]
         )
+
+        namespace = json_input["namespace"]
+
+        # 删除 Pod 的命令
+        pod_name = "nginx-pod"
+        command_pod = f"kubectl delete pod {pod_name} -n {namespace}"
         
-        pod_namespace = json_input["namespace"]
-        pod_names = ["nginx1", "nginx2", "nginx3"]
-        
-        for pod_name in pod_names:
-            # 删除 Pod 的命令 
-            command = f"kubectl delete pod {pod_name} -n {pod_namespace}"
-            
-            # 运行命令并记录结果
-            result = run_kubectl_command(kube_config, command)
-            
-            logging.info(result)
-            assert "deleted" in result.lower(), f"Failed to delete Pod '{pod_name}' in namespace '{pod_namespace}'"
+        # 运行命令并记录结果
+        result_pod = run_kubectl_command(kube_config, command_pod)
+        logging.info(result_pod)
+        assert "deleted" in result_pod.lower(), f"Failed to delete Pod '{pod_name}' in namespace '{namespace}'"
+
+# 运行测试
+if __name__ == "__main__":
+    pytest.main()

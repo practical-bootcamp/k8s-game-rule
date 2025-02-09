@@ -5,7 +5,7 @@ from tests.helper.k8s_client_helper import configure_k8s_client
 from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 
 @pytest.mark.order(5)
-class TestDeploy:
+class TestCheck:
     def test_001_check_pod_via_client(self, json_input):
         k8s_client = configure_k8s_client(json_input)
         pod_name = "nginx-pod"
