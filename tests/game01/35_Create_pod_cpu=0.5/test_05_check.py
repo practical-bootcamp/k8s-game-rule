@@ -1,4 +1,3 @@
-# test_05_check.py
 import logging
 import pytest
 import json
@@ -27,7 +26,7 @@ class TestCheck:
         container = pod.spec.containers[0]
         resources = container.resources
         assert resources.requests is not None, "Missing resources.requests in Pod."
-        assert resources.requests["cpu"] == "0.5", "Incorrect CPU request in Pod resources."
+        assert resources.requests["cpu"] == "500m", "Incorrect CPU request in Pod resources."
         assert resources.requests["memory"] == "1Gi", "Incorrect memory request in Pod resources."
         assert resources.limits is not None, "Missing resources.limits in Pod."
         assert resources.limits["cpu"] == "1", "Incorrect CPU limit in Pod resources."
@@ -55,7 +54,7 @@ class TestCheck:
         container = pod["spec"]["containers"][0]
         resources = container["resources"]
         assert resources["requests"] is not None, "Missing resources.requests in Pod."
-        assert resources["requests"]["cpu"] == "0.5", "Incorrect CPU request in Pod resources."
+        assert resources["requests"]["cpu"] == "500m", "Incorrect CPU request in Pod resources."
         assert resources["requests"]["memory"] == "1Gi", "Incorrect memory request in Pod resources."
         assert resources["limits"] is not None, "Missing resources.limits in Pod."
         assert resources["limits"]["cpu"] == "1", "Incorrect CPU limit in Pod resources."
