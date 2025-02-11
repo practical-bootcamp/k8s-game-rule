@@ -1,5 +1,6 @@
 import base64
 import json
+import logging
 import os
 import subprocess
 import tempfile
@@ -41,3 +42,14 @@ def run_kubectl_command(kube_config, command):
             command, shell=True, capture_output=True, text=True, check=True
         )
     return result.stdout
+
+
+def delete_namespace(json_input):
+    kube_config = build_kube_config(
+        json_input["cert_file"], json_input["key_file"], json_input["host"]
+    )
+
+    pod_namespace = json_input["namespace"]
+    command = f"kubectl delete namespace  {pod_namespace}"
+    result = run_kubectl_command(kube_config, command)
+    logging.info(result)
