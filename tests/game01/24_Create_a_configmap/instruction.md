@@ -1,0 +1,1 @@
+Create a configmap named config with values foo=lala,foo2=lolo

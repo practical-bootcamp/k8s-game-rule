@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: anotherone
+data:
+  var6: val6
+  var7: val7
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    env:
+    - name: var6
+      valueFrom:
+        configMapKeyRef:
+          name: anotherone
+          key: var6
+    - name: var7
+      valueFrom:
+        configMapKeyRef:
+          name: anotherone
+          key: var7
+    ports:
+    - containerPort: 80

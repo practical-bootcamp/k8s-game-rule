@@ -1,0 +1,1 @@
+Create a pods with names nginx1 should have the label app=v1

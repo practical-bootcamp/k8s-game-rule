@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: limitrange
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+  namespace: limitrange
+spec:
+  limits:
+  - max:
+      memory: "500Mi"
+    min:
+      memory: "100Mi"
+    type: Pod

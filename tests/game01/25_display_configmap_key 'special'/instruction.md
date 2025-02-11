@@ -1,0 +1,1 @@
+Create and display a configmap giving the key 'special'

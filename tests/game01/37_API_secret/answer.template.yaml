@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ilovestudy
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ilovek8s
+  namespace: ilovestudy
+type: Opaque
+data:
+  API_KEY: aWxvdmVrOHM= # "ilovek8s" 的 Base64 编码

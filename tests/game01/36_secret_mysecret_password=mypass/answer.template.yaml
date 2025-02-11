@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysecret
+  namespace: default # 可以根据需要更改命名空间
+type: Opaque
+data:
+  password: bXlwYXNz # "mypass" 的 Base64 编码

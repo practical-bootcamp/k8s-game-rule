@@ -1,0 +1,1 @@
+Attempt to create a pod with resource requests cpu=2, memory=3Gi and limits cpu=3, memory=4Gi in namespace one（WILL cannot create）

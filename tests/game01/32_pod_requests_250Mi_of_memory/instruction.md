@@ -1,0 +1,1 @@
+pod that requests 250Mi of memory
