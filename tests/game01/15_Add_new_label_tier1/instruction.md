@@ -1,1 +1,0 @@
-Add a new label tier=web to all pods having 'app=v2' or 'app=v1' labels

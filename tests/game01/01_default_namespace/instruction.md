@@ -1,1 +1,1 @@
-Provide the valid k8s confidential and host address.
+Please provide the Kubernetes confidential information and host address.

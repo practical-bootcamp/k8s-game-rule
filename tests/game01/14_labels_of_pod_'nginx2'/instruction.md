@@ -1,1 +1,0 @@
-Change the labels of pod 'nginx2' to be app=v2

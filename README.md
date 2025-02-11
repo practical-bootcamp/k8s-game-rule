@@ -22,6 +22,9 @@ To enable auto-completion
 1. Run ```./create_virtural_env.sh```
 2. Set Python Interpreter to ```/workspaces/k8s-game-rule/venv/bin/python```
 
+If VS Code's testing explorer behaves unexpectedly, such as after a folder rename, clear the Python cache.
+```./clean_python_cache.sh ```
+
 Install Kubectl command tools for Unit Test
 https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 
