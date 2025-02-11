@@ -1,1 +1,1 @@
-Remove the annotations for the pods
+In the '{{namespace}}' namespace, remove the annotations for the pods.

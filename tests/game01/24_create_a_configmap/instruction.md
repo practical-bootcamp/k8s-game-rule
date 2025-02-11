@@ -1,0 +1,1 @@
+In the '{{namespace}}' namespace, create a configmap named config with values foo=lala, and foo2=lolo.
