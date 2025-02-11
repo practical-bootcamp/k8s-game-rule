@@ -59,6 +59,6 @@ class TestCheck:
                 )
             except CalledProcessError as e:
                 if "not found" in str(e).lower():
-                    logging.info(f"Pod '{pod_name}' not found, skipping check.")
+                    logging.info("Pod '%s' not found, skipping check.", pod_name)
                 else:
                     raise
