@@ -1,0 +1,1 @@
+Create a pod that will be deployed to a Node that has the label 'accelerator=nvidia-tesla-p100'

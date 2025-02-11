@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: options
+data:
+  var5: val5
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    env:
+    - name: option
+      valueFrom:
+        configMapKeyRef:
+          name: options
+          key: var5
+    ports:
+    - containerPort: 80

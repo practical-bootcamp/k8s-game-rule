@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+data:
+  foo: lala
+  foo2: lolo

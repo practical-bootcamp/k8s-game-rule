@@ -1,0 +1,2 @@
+https://github.com/dgkanatsios/CKAD-exercises/blob/main/d.configuration.md
+https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/
