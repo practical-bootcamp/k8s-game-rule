@@ -1,1 +1,1 @@
-Add an annotation 'owner: marketing' to all pods having 'app=v2' label
+In the '{{namespace}}' namespace, add the annotation `owner: marketing` to all pods labeled `app=v2`.

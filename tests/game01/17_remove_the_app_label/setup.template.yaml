@@ -10,10 +10,7 @@ metadata:
   name: nginx{{ loop.index }}
   labels:
     app: v{{ loop.index }}
-# {% if loop.index == 2 %}
-  annotations:    
-    owner: marketing
-# {% endif %}
+    tier: web
   namespace: {{namespace}}
 spec:
   containers:

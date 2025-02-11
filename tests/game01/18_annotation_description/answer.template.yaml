@@ -8,12 +8,10 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: nginx{{ loop.index }}
-  labels:
-    app: v{{ loop.index }}
-# {% if loop.index == 2 %}
-  annotations:    
-    owner: marketing
-# {% endif %}
+  labels:    
+    tier: web
+  annotations:  
+    description: my description
   namespace: {{namespace}}
 spec:
   containers:
