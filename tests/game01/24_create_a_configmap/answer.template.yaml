@@ -9,5 +9,5 @@ metadata:
   name: config
   namespace: {{namespace}}
 data:
-  foo: lala
-  foo2: lolo
+  foo: {{value1}}
+  foo2: {{value2}}

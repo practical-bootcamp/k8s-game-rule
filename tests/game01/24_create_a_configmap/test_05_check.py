@@ -29,9 +29,13 @@ class TestCheckConfigMap:
         assert configmap.kind == "ConfigMap", "Incorrect kind."
         assert configmap.metadata.name == configmap_name, "Incorrect metadata.name."
         assert "foo" in configmap.data, "Missing key 'foo' in data."
-        assert configmap.data["foo"] == "lala", "Incorrect value for 'foo'."
+        assert (
+            configmap.data["foo"] == json_input["value1"]
+        ), "Incorrect value for 'foo'."
         assert "foo2" in configmap.data, "Missing key 'foo2' in data."
-        assert configmap.data["foo2"] == "lolo", "Incorrect value for 'foo2'."
+        assert (
+            configmap.data["foo2"] == json_input["value2"]
+        ), "Incorrect value for 'foo2'."
         logging.info("ConfigMap '%s' has the correct content.", configmap_name)
 
     def test_002_check_configmap_kubectl(self, json_input):
@@ -52,7 +56,11 @@ class TestCheckConfigMap:
         assert configmap["kind"] == "ConfigMap", "Incorrect kind."
         assert configmap["metadata"]["name"] == "config", "Incorrect metadata.name."
         assert "foo" in configmap["data"], "Missing key 'foo' in data."
-        assert configmap["data"]["foo"] == "lala", "Incorrect value for 'foo'."
+        assert (
+            configmap["data"]["foo"] == json_input["value1"]
+        ), "Incorrect value for 'foo'."
         assert "foo2" in configmap["data"], "Missing key 'foo2' in data."
-        assert configmap["data"]["foo2"] == "lolo", "Incorrect value for 'foo2'."
+        assert (
+            configmap["data"]["foo2"] == json_input["value2"]
+        ), "Incorrect value for 'foo2'."
         logging.info("ConfigMap 'config' has the correct content.")
