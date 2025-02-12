@@ -1,1 +1,0 @@
-Remove the annotations for the pods

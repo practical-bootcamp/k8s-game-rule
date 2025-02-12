@@ -1,1 +1,1 @@
-Annotate pods nginx1, nginx2, nginx3 with "description='my description'" value
+In the '{{namespace}}' namespace, annotate the nginx1, nginx2, and nginx3 pods with the description "my description."
