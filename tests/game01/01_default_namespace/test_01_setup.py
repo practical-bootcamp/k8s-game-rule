@@ -1,6 +1,2 @@
-import pytest
-
-
-@pytest.mark.order(1)
-def test_setup(json_input):
+def test_setup(json_input):  # pylint: disable=W0613
     pass

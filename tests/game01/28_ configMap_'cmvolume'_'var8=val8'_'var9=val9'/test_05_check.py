@@ -1,10 +1,10 @@
-import logging
-import pytest
 import json
+import logging
+
 from tests.helper.k8s_client_helper import configure_k8s_client
 from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 
-@pytest.mark.order(5)
+
 class TestCheck:
     def test_001_check_configmap(self, json_input):
         k8s_client = configure_k8s_client(json_input)
@@ -12,7 +12,9 @@ class TestCheck:
         namespace = json_input["namespace"]
 
         try:
-            configmap = k8s_client.read_namespaced_config_map(name=configmap_name, namespace=namespace)
+            configmap = k8s_client.read_namespaced_config_map(
+                name=configmap_name, namespace=namespace
+            )
         except Exception as e:
             assert False, f"Failed to get ConfigMap '{configmap_name}': {str(e)}"
 
@@ -43,17 +45,28 @@ class TestCheck:
 
         # 检查Pod的卷挂载
         volumes = pod["spec"]["volumes"]
-        volume_dict = {vol["name"]: vol["configMap"]["name"] for vol in volumes if "configMap" in vol}
+        volume_dict = {
+            vol["name"]: vol["configMap"]["name"]
+            for vol in volumes
+            if "configMap" in vol
+        }
         assert "config-volume" in volume_dict, "Missing volume 'config-volume' in Pod."
-        assert volume_dict["config-volume"] == "cmvolume", "Incorrect ConfigMap reference for volume 'config-volume'."
-        
+        assert (
+            volume_dict["config-volume"] == "cmvolume"
+        ), "Incorrect ConfigMap reference for volume 'config-volume'."
+
         # 检查挂载路径
         volume_mounts = pod["spec"]["containers"][0]["volumeMounts"]
         mount_paths = {mnt["name"]: mnt["mountPath"] for mnt in volume_mounts}
-        assert "config-volume" in mount_paths, "Missing volume mount 'config-volume' in Pod."
-        assert mount_paths["config-volume"] == "/etc/lala", "Incorrect mountPath for volume 'config-volume'."
-        
+        assert (
+            "config-volume" in mount_paths
+        ), "Missing volume mount 'config-volume' in Pod."
+        assert (
+            mount_paths["config-volume"] == "/etc/lala"
+        ), "Incorrect mountPath for volume 'config-volume'."
+
         logging.info(f"Pod 'nginx-pod' has the correct volume mounts.")
+
 
 # 运行测试
 if __name__ == "__main__":

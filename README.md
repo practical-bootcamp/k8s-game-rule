@@ -25,6 +25,26 @@ To enable auto-completion
 If VS Code's testing explorer behaves unexpectedly, such as after a folder rename, clear the Python cache.
 ```./clean_python_cache.sh ```
 
+## To skip answer
+Change .env 
+```
+SKIP_ANSWER_TESTS=True
+```
+
+## Running test in command line
+Run all tasks
+```
+pytest --import-mode=importlib --rootdir=.
+```
+Run single task
+```
+pytest --import-mode=importlib --rootdir=. tests/game01/02_create_namespace/
+```
+To skip answer test
+```
+SKIP_ANSWER_TESTS=True pytest --import-mode=importlib --rootdir=.
+```
+
 Install Kubectl command tools for Unit Test
 https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 

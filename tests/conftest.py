@@ -75,3 +75,20 @@ def json_input(request):
         json_str_input = file.read()
         result = json.loads(json_str_input)
     return result
+
+
+def pytest_collection_modifyitems(config, items):
+    skip = pytest.mark.skip(reason="Skip Answer")
+    skip_answer = os.getenv("SKIP_ANSWER_TESTS") == "True"
+    if skip_answer:
+        for item in items:
+            logging.info(item.path)
+            if "answer" in item.name:
+                item.add_marker(skip)
+
+    sorted_items = items.copy()
+
+    sorted_items.sort(
+        key=lambda item: (os.path.dirname(item.path), os.path.basename(item.path))
+    )
+    items[:] = sorted_items
