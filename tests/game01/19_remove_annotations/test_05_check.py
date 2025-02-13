@@ -2,14 +2,12 @@ import json
 import logging
 from subprocess import CalledProcessError
 
-import pytest
 from kubernetes.client.rest import ApiException
 
 from tests.helper.k8s_client_helper import configure_k8s_client
 from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 
 
-@pytest.mark.order(5)
 class TestCheck:
     def test_001_ensure_no_annotations_via_library(self, json_input):
         k8s_client = configure_k8s_client(json_input)
@@ -47,7 +45,7 @@ class TestCheck:
         namespace = json_input["namespace"]
         pod_list = ["nginx1", "nginx2", "nginx3"]
 
-        for pod_name in pod_list:    
+        for pod_name in pod_list:
             cmd = f"kubectl get pod {pod_name} -n {namespace} -o json"
             logging.debug("Executing command: %s", cmd)
             output = run_kubectl_command(kube_cfg, cmd)
@@ -59,4 +57,3 @@ class TestCheck:
                 "description" not in annotations
             ), f"Pod '{pod_name}' has leftover annotations: {annotations}"
             logging.info("Confirmed pod '%s' has no annotations.", pod_name)
-  

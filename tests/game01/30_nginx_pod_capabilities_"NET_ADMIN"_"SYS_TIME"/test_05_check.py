@@ -1,10 +1,10 @@
-import logging
-import pytest
 import json
+import logging
+
 from tests.helper.k8s_client_helper import configure_k8s_client
 from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 
-@pytest.mark.order(5)
+
 class TestCheck:
     def test_001_check_pod_via_client(self, json_input):
         k8s_client = configure_k8s_client(json_input)
@@ -24,10 +24,16 @@ class TestCheck:
         # 检查Pod的securityContext
         security_context = pod.spec.containers[0].security_context
         assert security_context is not None, "Missing securityContext in Pod."
-        assert "NET_ADMIN" in security_context.capabilities.add, "Missing capability 'NET_ADMIN' in Pod securityContext."
-        assert "SYS_TIME" in security_context.capabilities.add, "Missing capability 'SYS_TIME' in Pod securityContext."
+        assert (
+            "NET_ADMIN" in security_context.capabilities.add
+        ), "Missing capability 'NET_ADMIN' in Pod securityContext."
+        assert (
+            "SYS_TIME" in security_context.capabilities.add
+        ), "Missing capability 'SYS_TIME' in Pod securityContext."
 
-        logging.info(f"Pod '{pod_name}' has the correct securityContext capabilities 'NET_ADMIN' and 'SYS_TIME'.")
+        logging.info(
+            f"Pod '{pod_name}' has the correct securityContext capabilities 'NET_ADMIN' and 'SYS_TIME'."
+        )
 
     def test_002_check_pod_via_kubectl(self, json_input):
         logging.debug("Starting test_002_check_pod_via_kubectl")
@@ -47,10 +53,17 @@ class TestCheck:
         # 检查Pod的securityContext
         security_context = pod["spec"]["containers"][0]["securityContext"]
         assert security_context is not None, "Missing securityContext in Pod."
-        assert "NET_ADMIN" in security_context["capabilities"]["add"], "Missing capability 'NET_ADMIN' in Pod securityContext."
-        assert "SYS_TIME" in security_context["capabilities"]["add"], "Missing capability 'SYS_TIME' in Pod securityContext."
+        assert (
+            "NET_ADMIN" in security_context["capabilities"]["add"]
+        ), "Missing capability 'NET_ADMIN' in Pod securityContext."
+        assert (
+            "SYS_TIME" in security_context["capabilities"]["add"]
+        ), "Missing capability 'SYS_TIME' in Pod securityContext."
 
-        logging.info(f"Pod 'nginx-pod' has the correct securityContext capabilities 'NET_ADMIN' and 'SYS_TIME'.")
+        logging.info(
+            f"Pod 'nginx-pod' has the correct securityContext capabilities 'NET_ADMIN' and 'SYS_TIME'."
+        )
+
 
 # 运行测试
 if __name__ == "__main__":

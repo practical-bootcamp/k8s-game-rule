@@ -1,12 +1,9 @@
 # test_05_check.py
 import logging
 
-import pytest
-
 from tests.helper.k8s_client_helper import configure_k8s_client
 
 
-@pytest.mark.order(5)
 class TestCheck:
     def test_001_check_annotation_with_library(self, json_input):
         k8s_client = configure_k8s_client(json_input)
