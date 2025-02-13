@@ -1,7 +1,6 @@
 # test_05_check.py
 import json
 import logging
-from subprocess import CalledProcessError
 
 import pytest
 
@@ -39,26 +38,20 @@ class TestCheck:
         pod_names = ["nginx1", "nginx2", "nginx3"]
 
         for pod_name in pod_names:
-            try:
-                command = f"kubectl get pod {pod_name} -n {pod_namespace} -o json"
-                logging.debug("Running command: %s", command)
-                result = run_kubectl_command(kube_config, command)
-                logging.debug("Command result: %s", result)
+            command = f"kubectl get pod {pod_name} -n {pod_namespace} -o json"
+            logging.debug("Running command: %s", command)
+            result = run_kubectl_command(kube_config, command)
+            logging.debug("Command result: %s", result)
 
-                json_output = result.strip()
-                logging.debug("Command output: %s", json_output)
-                logging.info(json_output)
+            json_output = result.strip()
+            logging.debug("Command output: %s", json_output)
+            logging.info(json_output)
 
-                pod_data = json.loads(json_output)
-                annotations = pod_data["metadata"].get("annotations", {})
-                assert (
-                    annotations.get("description") == "my description"
-                ), f"Pod '{pod_name}' does not have the annotation 'description=my description'"
-                logging.info(
-                    "Pod '%s' has the annotation 'description=my description'", pod_name
-                )
-            except CalledProcessError as e:
-                if "not found" in str(e).lower():
-                    logging.info("Pod '%s' not found, skipping check.", pod_name)
-                else:
-                    raise
+            pod_data = json.loads(json_output)
+            annotations = pod_data["metadata"].get("annotations", {})
+            assert (
+                annotations.get("description") == "my description"
+            ), f"Pod '{pod_name}' does not have the annotation 'description=my description'"
+            logging.info(
+                "Pod '%s' has the annotation 'description=my description'", pod_name
+            )

@@ -1,6 +1,6 @@
 # k8s-game-rule
 
-Kubernetes Isekai (異世界） is an open-source RPG designed for hands-on Kubernetes learning through gamification. Ideal for junior to Higher Diploma students of Hong Kong Institute of Information Technology (HKIIT), it transforms Kubernetes education into an engaging adventure.
+Kubernetes Isekai (異世界) is an open-source RPG designed for hands-on Kubernetes learning through gamification. Ideal for junior to Higher Diploma students of Hong Kong Institute of Information Technology (HKIIT), it transforms Kubernetes education into an engaging adventure.
 
 1. Role-Playing Adventure: Students interact with NPCs who assign Kubernetes tasks.
 2. Task-Based Learning: Tasks involve setting up and managing Kubernetes clusters.

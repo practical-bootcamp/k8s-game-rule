@@ -1,6 +1,5 @@
 import json
 import logging
-from subprocess import CalledProcessError
 
 import pytest
 from kubernetes.client.rest import ApiException
@@ -44,31 +43,25 @@ class TestCheck:
         )
         namespace = json_input["namespace"]
 
-        try:
-            cmd = f"kubectl get pods -n {namespace} -o json"
-            logging.debug("Executing command: %s", cmd)
-            outcome = run_kubectl_command(kube_cfg, cmd)
-            logging.debug("Command execution result: %s", outcome)
+        cmd = f"kubectl get pods -n {namespace} -o json"
+        logging.debug("Executing command: %s", cmd)
+        outcome = run_kubectl_command(kube_cfg, cmd)
+        logging.debug("Command execution result: %s", outcome)
 
-            output_str = outcome.strip()
-            logging.debug("Output processed: %s", output_str)
-            logging.info(output_str)
+        output_str = outcome.strip()
+        logging.debug("Output processed: %s", output_str)
+        logging.info(output_str)
 
-            pods_info = json.loads(output_str)
-            for pod in pods_info["items"]:
-                labels = pod["metadata"].get("labels", {})
-                if labels.get("app") in ["v1", "v2"]:
-                    assert labels.get("tier") == "web", (
-                        f"Pod '{pod['metadata']['name']}' with 'app={labels.get('app')}' "
-                        "does not include the 'tier=web' label"
-                    )
-                    logging.info(
-                        "Pod '%s' with 'app=%s' has 'tier=web'",
-                        pod["metadata"]["name"],
-                        labels.get("app"),
-                    )
-        except CalledProcessError as cpe:
-            if "not found" in str(cpe).lower():
-                logging.info("No pods found in '%s'. Skipping.", namespace)
-            else:
-                raise
+        pods_info = json.loads(output_str)
+        for pod in pods_info["items"]:
+            labels = pod["metadata"].get("labels", {})
+            if labels.get("app") in ["v1", "v2"]:
+                assert labels.get("tier") == "web", (
+                    f"Pod '{pod['metadata']['name']}' with 'app={labels.get('app')}' "
+                    "does not include the 'tier=web' label"
+                )
+                logging.info(
+                    "Pod '%s' with 'app=%s' has 'tier=web'",
+                    pod["metadata"]["name"],
+                    labels.get("app"),
+                )

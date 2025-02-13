@@ -47,21 +47,16 @@ class TestCheck:
         namespace = json_input["namespace"]
         pod_list = ["nginx1", "nginx2", "nginx3"]
 
-        for pod_name in pod_list:
-            try:
-                cmd = f"kubectl get pod {pod_name} -n {namespace} -o json"
-                logging.debug("Executing command: %s", cmd)
-                output = run_kubectl_command(kube_cfg, cmd)
-                logging.debug("Command output: %s", output.strip())
+        for pod_name in pod_list:    
+            cmd = f"kubectl get pod {pod_name} -n {namespace} -o json"
+            logging.debug("Executing command: %s", cmd)
+            output = run_kubectl_command(kube_cfg, cmd)
+            logging.debug("Command output: %s", output.strip())
 
-                pod_data = json.loads(output)
-                annotations = pod_data["metadata"].get("annotations", {})
-                assert (
-                    "description" not in annotations
-                ), f"Pod '{pod_name}' has leftover annotations: {annotations}"
-                logging.info("Confirmed pod '%s' has no annotations.", pod_name)
-            except CalledProcessError as cpe:
-                if "not found" in str(cpe).lower():
-                    logging.info("Pod '%s' not found; skipping validation.", pod_name)
-                else:
-                    raise
+            pod_data = json.loads(output)
+            annotations = pod_data["metadata"].get("annotations", {})
+            assert (
+                "description" not in annotations
+            ), f"Pod '{pod_name}' has leftover annotations: {annotations}"
+            logging.info("Confirmed pod '%s' has no annotations.", pod_name)
+  

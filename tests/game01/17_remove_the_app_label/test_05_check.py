@@ -1,7 +1,6 @@
 # test_05_check.py
 import json
 import logging
-from subprocess import CalledProcessError
 
 import pytest
 from kubernetes.client.rest import ApiException
@@ -41,28 +40,20 @@ class TestCheck:
 
         pod_namespace = json_input["namespace"]
 
-        try:
-            command = f"kubectl get pods -n {pod_namespace} -o json"
-            logging.debug("Running command: %s", command)
-            result = run_kubectl_command(kube_config, command)
-            logging.debug("Command result: %s", result)
+        command = f"kubectl get pods -n {pod_namespace} -o json"
+        logging.debug("Running command: %s", command)
+        result = run_kubectl_command(kube_config, command)
+        logging.debug("Command result: %s", result)
 
-            json_output = result.strip()
-            logging.debug("Command output: %s", json_output)
-            logging.info(json_output)
+        json_output = result.strip()
+        logging.debug("Command output: %s", json_output)
+        logging.info(json_output)
 
-            pods_data = json.loads(json_output)
-            for pod in pods_data["items"]:
-                assert (
-                    "app" not in pod["metadata"]["labels"]
-                ), f"Found Pod '{pod['metadata']['name']}' with label 'app'"
-            logging.info(
-                "No Pods with the label 'app' found in namespace '%s'", pod_namespace
-            )
-        except CalledProcessError as e:
-            if "not found" in str(e).lower():
-                logging.info(
-                    "No pods found in namespace '%s', skipping check.", pod_namespace
-                )
-            else:
-                raise
+        pods_data = json.loads(json_output)
+        for pod in pods_data["items"]:
+            assert (
+                "app" not in pod["metadata"]["labels"]
+            ), f"Found Pod '{pod['metadata']['name']}' with label 'app'"
+        logging.info(
+            "No Pods with the label 'app' found in namespace '%s'", pod_namespace
+        )
