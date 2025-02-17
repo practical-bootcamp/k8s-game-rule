@@ -1,1 +1,0 @@
-Change pod's image to nginx:1.24.0. 

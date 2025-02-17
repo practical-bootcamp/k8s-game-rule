@@ -1,1 +1,0 @@
-Create an nginx pod that uses 'myuser' as a service account

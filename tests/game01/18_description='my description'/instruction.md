@@ -1,1 +1,0 @@
-Annotate pods nginx1, nginx2, nginx3 with "description='my description'" value

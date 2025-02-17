@@ -1,1 +1,0 @@
-Remove the 'app' label from the pods

@@ -1,10 +1,11 @@
-import logging
-import pytest
 import json
+import logging
+
 from kubernetes.client.rest import ApiException
+
 from tests.helper.k8s_client_helper import configure_k8s_client
 
-@pytest.mark.order(5)
+
 class TestCheck:
     def test_001_check_pod_absence(self, json_input):
         k8s_client = configure_k8s_client(json_input)
@@ -20,6 +21,7 @@ class TestCheck:
                 logging.info(f"Pod '{pod_name}' does not exist as expected.")
             else:
                 raise e
+
 
 # 运行测试
 if __name__ == "__main__":

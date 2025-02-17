@@ -1,3 +1,4 @@
 {
-    "namespace": "default"
+    "namespace": "{{random_name()}}{{random_number(1,10)}}{{student_id()}}",
+    "configmap_name": "{{random_name()}}"
 }

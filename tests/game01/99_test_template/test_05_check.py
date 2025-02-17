@@ -1,12 +1,9 @@
 import logging
 
-import pytest
-
 from tests.helper.k8s_client_helper import configure_k8s_client
 from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 
 
-@pytest.mark.order(5)
 class TestCheck:
     def test_001_namespace_exists_with_library(self, json_input):
         logging.debug(json_input)

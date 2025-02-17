@@ -6,6 +6,9 @@
     ],
     "pylint.cwd": "${workspaceFolder}",
     "python.testing.pytestArgs": [
-       "--import-mode=importlib","--rootdir=${workspaceFolder}"
+        "--import-mode=importlib",
+        "--rootdir=${workspaceFolder}",
+        "--maxprocesses=1",
     ],
+    "python.envFile": "${workspaceFolder}/.env"
 }

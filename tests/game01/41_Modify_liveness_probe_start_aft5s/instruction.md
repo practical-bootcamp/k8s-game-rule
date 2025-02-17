@@ -1,1 +1,0 @@
-Modify the pod.yaml file so that liveness probe starts kicking in after 5 seconds whereas the interval between probes would be 5 seconds.Run it, check the probe
