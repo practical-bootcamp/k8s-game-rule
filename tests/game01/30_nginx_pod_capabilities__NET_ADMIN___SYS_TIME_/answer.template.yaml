@@ -2,10 +2,13 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: nginx-pod
+  namespace: {{namespace}}
 spec:
   containers:
   - name: nginx
     image: nginx
     securityContext:
       capabilities:
-        add: ["NET_ADMIN", "SYS_TIME"]
+        add:
+          - NET_ADMIN
+          - SYS_TIME
