@@ -1,3 +1,4 @@
 {
-    "namespace": "{{random_name()}}{{random_number(1,10)}}{{student_id()}}"
+    "namespace": "{{random_name()}}{{random_number(1,10)}}{{student_id()}}",
+    "value1":"{{random_name()}}"
 }

@@ -1,1 +1,1 @@
-Create a secret called mysecret with the values password=mypass
+In the {{namespace}} namespace, Create a secret called mysecret with the values password=mypass
