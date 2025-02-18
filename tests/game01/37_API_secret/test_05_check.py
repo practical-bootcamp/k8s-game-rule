@@ -5,6 +5,7 @@ import base64
 from tests.helper.k8s_client_helper import configure_k8s_client
 from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 
+
 class TestCheck:
     def test_001_check_secret_client(self, json_input):
         k8s_client = configure_k8s_client(json_input)
