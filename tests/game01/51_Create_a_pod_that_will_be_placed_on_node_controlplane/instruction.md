@@ -1,1 +1,0 @@
-Create a pod that will be placed on node controlplane. Use nodeSelector and tolerations.

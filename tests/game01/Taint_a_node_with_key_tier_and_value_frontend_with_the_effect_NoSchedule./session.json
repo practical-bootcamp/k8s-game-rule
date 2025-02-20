@@ -1,3 +1,0 @@
-{
-    "namespace": "{{random_name()}}{{random_number(1,10)}}{{student_id()}}"
-}
