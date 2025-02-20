@@ -1,0 +1,1 @@
+In the '{{namespace}}' namespace, create a ConfigMap named {{configmap_name}} with the values var6={{value1}} and var7={{value2}}, and create a new nginx Pod that loads these values as environment variables.

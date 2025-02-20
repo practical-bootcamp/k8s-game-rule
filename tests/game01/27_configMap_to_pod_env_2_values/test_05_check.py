@@ -9,6 +9,8 @@ class TestCheck:
     def test_001_check_configmap_and_pod(self, json_input):
         k8s_client = configure_k8s_client(json_input)
         namespace = json_input["namespace"]
+        value1 = json_input["value1"]
+        value2 = json_input["value2"]
         configmap_name = json_input["configmap_name"]
         pod_name = "nginx"
 
@@ -20,8 +22,8 @@ class TestCheck:
         except Exception as e:
             assert False, f"Failed to get ConfigMap '{configmap_name}': {str(e)}"
 
-        assert configmap.data["var6"] == "val6", "Incorrect value for 'var6'."
-        assert configmap.data["var7"] == "val7", "Incorrect value for 'var7'."
+        assert configmap.data["var6"] == value1, "Incorrect value for 'var6'."
+        assert configmap.data["var7"] == value2, "Incorrect value for 'var7'."
         logging.info(
             "ConfigMap '%s' has the correct values for 'var6' and 'var7'.",
             configmap_name,

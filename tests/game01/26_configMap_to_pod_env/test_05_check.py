@@ -9,6 +9,7 @@ class TestCheck:
     def test_001_check_configmap_and_pod(self, json_input):
         k8s_client = configure_k8s_client(json_input)
         namespace = json_input["namespace"]
+        value1 = json_input["value1"]
         configmap_name = "options"
         pod_name = "nginx"
 
@@ -20,8 +21,10 @@ class TestCheck:
         except Exception as e:
             assert False, f"Failed to get ConfigMap '{configmap_name}': {str(e)}"
 
-        assert configmap.data["var5"] == "val5", "Incorrect value for 'var5'."
-        logging.info("ConfigMap '%s' has the correct value for 'var5'.", configmap_name)
+        assert configmap.data["var5"] == value1, "Incorrect value for 'var5'."
+        logging.info(
+            "ConfigMap '%s' has the correct value for '%s'.", configmap_name, value1
+        )
 
         # 验证 Pod
         try:
@@ -49,6 +52,7 @@ class TestCheck:
             json_input["cert_file"], json_input["key_file"], json_input["host"]
         )
         namespace = json_input["namespace"]
+        value1 = json_input["value1"]
         pod_name = "nginx"
 
         command = f"kubectl get pod {pod_name} -n {namespace} -o json"
