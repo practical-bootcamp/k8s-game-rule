@@ -77,7 +77,7 @@ def json_input(request):
     return result
 
 
-def pytest_collection_modifyitems(config, items):
+def pytest_collection_modifyitems(config, items):  # disable=W0613
     skip = pytest.mark.skip(reason="Skip Answer")
     skip_answer = os.getenv("SKIP_ANSWER_TESTS") == "True"
     if skip_answer:

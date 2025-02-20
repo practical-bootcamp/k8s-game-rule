@@ -1,0 +1,1 @@
+In the '{{namespace}}' namespace, Create a configMap 'cmvolume' with values 'var8={{value1}}', 'var9={{value2}}'. Load this as a volume inside an nginx pod on path '/etc/lala'. Create the pod and 'ls' into the '/etc/lala' directory.

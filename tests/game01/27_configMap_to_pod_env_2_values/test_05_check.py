@@ -9,7 +9,9 @@ class TestCheck:
     def test_001_check_configmap_and_pod(self, json_input):
         k8s_client = configure_k8s_client(json_input)
         namespace = json_input["namespace"]
-        configmap_name = "options"
+        value1 = json_input["value1"]
+        value2 = json_input["value2"]
+        configmap_name = json_input["configmap_name"]
         pod_name = "nginx"
 
         # 验证 ConfigMap
@@ -20,8 +22,12 @@ class TestCheck:
         except Exception as e:
             assert False, f"Failed to get ConfigMap '{configmap_name}': {str(e)}"
 
-        assert configmap.data["var5"] == "val5", "Incorrect value for 'var5'."
-        logging.info("ConfigMap '%s' has the correct value for 'var5'.", configmap_name)
+        assert configmap.data["var6"] == value1, "Incorrect value for 'var6'."
+        assert configmap.data["var7"] == value2, "Incorrect value for 'var7'."
+        logging.info(
+            "ConfigMap '%s' has the correct values for 'var6' and 'var7'.",
+            configmap_name,
+        )
 
         # 验证 Pod
         try:
@@ -34,13 +40,19 @@ class TestCheck:
             for env in pod.spec.containers[0].env
         }
         assert (
-            env_vars["option"].name == configmap_name
-        ), "Incorrect ConfigMap name in environment variable."
+            env_vars["var6"].name == configmap_name
+        ), "Incorrect ConfigMap name for 'var6' in environment variable."
         assert (
-            env_vars["option"].key == "var5"
-        ), "Incorrect key in environment variable."
+            env_vars["var6"].key == "var6"
+        ), "Incorrect key for 'var6' in environment variable."
+        assert (
+            env_vars["var7"].name == configmap_name
+        ), "Incorrect ConfigMap name for 'var7' in environment variable."
+        assert (
+            env_vars["var7"].key == "var7"
+        ), "Incorrect key for 'var7' in environment variable."
         logging.info(
-            "Pod '%s' has the correct environment variable from ConfigMap.", pod_name
+            "Pod '%s' has the correct environment variables from ConfigMap.", pod_name
         )
 
     def test_002_check_pod_env_var_with_kubectl(self, json_input):
@@ -49,6 +61,7 @@ class TestCheck:
             json_input["cert_file"], json_input["key_file"], json_input["host"]
         )
         namespace = json_input["namespace"]
+        configmap_name = json_input["configmap_name"]
         pod_name = "nginx"
 
         command = f"kubectl get pod {pod_name} -n {namespace} -o json"
@@ -66,11 +79,17 @@ class TestCheck:
             for env in pod_data["spec"]["containers"][0]["env"]
         }
         assert (
-            env_vars["option"]["name"] == "options"
-        ), "Incorrect ConfigMap name in environment variable."
+            env_vars["var6"]["name"] == configmap_name
+        ), "Incorrect ConfigMap name for 'var6' in environment variable."
         assert (
-            env_vars["option"]["key"] == "var5"
-        ), "Incorrect key in environment variable."
+            env_vars["var6"]["key"] == "var6"
+        ), "Incorrect key for 'var6' in environment variable."
+        assert (
+            env_vars["var7"]["name"] == configmap_name
+        ), "Incorrect ConfigMap name for 'var7' in environment variable."
+        assert (
+            env_vars["var7"]["key"] == "var7"
+        ), "Incorrect key for 'var7' in environment variable."
         logging.info(
-            "Pod '%s' has the correct environment variable from ConfigMap.", pod_name
+            "Pod '%s' has the correct environment variables from ConfigMap.", pod_name
         )
