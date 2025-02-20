@@ -52,7 +52,6 @@ class TestCheck:
             json_input["cert_file"], json_input["key_file"], json_input["host"]
         )
         namespace = json_input["namespace"]
-        value1 = json_input["value1"]
         pod_name = "nginx"
 
         command = f"kubectl get pod {pod_name} -n {namespace} -o json"
