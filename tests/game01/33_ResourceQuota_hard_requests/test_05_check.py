@@ -6,67 +6,51 @@ from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 
 
 class TestCheck:
-    def test_001_check_resourcequota_via_client(self, json_input):
+    def test_001_check_resourcequota_client(self, json_input):
         k8s_client = configure_k8s_client(json_input)
-        quota_name = "resource-quota"
-        namespace = "one"
+        namespace = json_input["namespace"]
+        resourcequota_name = "resource-quota"
 
+        # 验证 ResourceQuota
         try:
-            quota = k8s_client.read_namespaced_resource_quota(
-                name=quota_name, namespace=namespace
-            )
+            logging.info("Checking ResourceQuota '%s' in namespace '%s' using client", resourcequota_name, namespace)
+            resourcequota = k8s_client.read_namespaced_resource_quota(name=resourcequota_name, namespace=namespace)
         except Exception as e:
-            assert False, f"Failed to get ResourceQuota '{quota_name}': {str(e)}"
+            logging.error("Failed to get ResourceQuota '%s': %s", resourcequota_name, str(e))
+            assert False, f"Failed to get ResourceQuota '{resourcequota_name}': {str(e)}"
 
-        # 验证ResourceQuota的内容
-        assert quota.api_version == "v1", "Incorrect apiVersion."
-        assert quota.kind == "ResourceQuota", "Incorrect kind."
-        assert quota.metadata.name == quota_name, "Incorrect metadata.name."
-        assert quota.metadata.namespace == namespace, "Incorrect metadata.namespace."
+        # 验证 ResourceQuota 中的硬性限制
+        hard = resourcequota.spec.hard
+        assert hard["requests.cpu"] == "1", f"Expected requests.cpu to be '1', but got '{hard['requests.cpu']}'."
+        assert hard["requests.memory"] == "1Gi", f"Expected requests.memory to be '1Gi', but got '{hard['requests.memory']}'."
+        assert hard["limits.cpu"] == "2", f"Expected limits.cpu to be '2', but got '{hard['limits.cpu']}'."
+        assert hard["limits.memory"] == "2Gi", f"Expected limits.memory to be '2Gi', but got '{hard['limits.memory']}'."
+        logging.info("ResourceQuota '%s' has the correct hard limits.", resourcequota_name)
 
-        # 检查ResourceQuota的资源请求和限制
-        hard_limits = quota.spec.hard
-        assert hard_limits["requests.cpu"] == "1", "Incorrect requests.cpu limit."
-        assert (
-            hard_limits["requests.memory"] == "1Gi"
-        ), "Incorrect requests.memory limit."
-        assert hard_limits["limits.cpu"] == "2", "Incorrect limits.cpu limit."
-        assert hard_limits["limits.memory"] == "2Gi", "Incorrect limits.memory limit."
-
-        logging.info(
-            f"ResourceQuota '{quota_name}' in Namespace '{namespace}' has the correct resource requests and limits."
-        )
-
-    def test_002_check_resourcequota_via_kubectl(self, json_input):
-        logging.debug("Starting test_002_check_resourcequota_via_kubectl")
+    def test_002_check_resourcequota_kubectl(self, json_input):
+        logging.debug("Starting test_002_check_resourcequota_kubectl")
         kube_config = build_kube_config(
             json_input["cert_file"], json_input["key_file"], json_input["host"]
         )
+        namespace = json_input["namespace"]
+        resourcequota_name = "resource-quota"
 
-        command = f"kubectl get resourcequota resource-quota -n one -o json"
+        # 使用 kubectl 获取 ResourceQuota
+        command = f"kubectl get resourcequota {resourcequota_name} -n {namespace} -o json"
         result = run_kubectl_command(kube_config, command)
-        quota = json.loads(result)
 
-        # 验证ResourceQuota的内容
-        assert quota["apiVersion"] == "v1", "Incorrect apiVersion."
-        assert quota["kind"] == "ResourceQuota", "Incorrect kind."
-        assert quota["metadata"]["name"] == "resource-quota", "Incorrect metadata.name."
-        assert quota["metadata"]["namespace"] == "one", "Incorrect metadata.namespace."
+        # 解析 kubectl 输出的 JSON 内容
+        resourcequota = json.loads(result)
 
-        # 检查ResourceQuota的资源请求和限制
-        hard_limits = quota["spec"]["hard"]
-        assert hard_limits["requests.cpu"] == "1", "Incorrect requests.cpu limit."
-        assert (
-            hard_limits["requests.memory"] == "1Gi"
-        ), "Incorrect requests.memory limit."
-        assert hard_limits["limits.cpu"] == "2", "Incorrect limits.cpu limit."
-        assert hard_limits["limits.memory"] == "2Gi", "Incorrect limits.memory limit."
+        # 验证 ResourceQuota 的内容
+        assert resourcequota["apiVersion"] == "v1", "Incorrect apiVersion."
+        assert resourcequota["kind"] == "ResourceQuota", "Incorrect kind."
+        assert resourcequota["metadata"]["name"] == resourcequota_name, "Incorrect metadata.name."
 
-        logging.info(
-            f"ResourceQuota 'resource-quota' in Namespace 'one' has the correct resource requests and limits."
-        )
-
-
-# 运行测试
-if __name__ == "__main__":
-    pytest.main()
+        # 验证 ResourceQuota 中的硬性限制
+        hard = resourcequota["spec"]["hard"]
+        assert hard["requests.cpu"] == "1", f"Expected requests.cpu to be '1', but got '{hard['requests.cpu']}'."
+        assert hard["requests.memory"] == "1Gi", f"Expected requests.memory to be '1Gi', but got '{hard['requests.memory']}'."
+        assert hard["limits.cpu"] == "2", f"Expected limits.cpu to be '2', but got '{hard['limits.cpu']}'."
+        assert hard["limits.memory"] == "2Gi", f"Expected limits.memory to be '2Gi', but got '{hard['limits.memory']}'."
+        logging.info("ResourceQuota '%s' has the correct hard limits.", resourcequota_name)

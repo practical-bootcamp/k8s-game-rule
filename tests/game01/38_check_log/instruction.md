@@ -1,0 +1,1 @@
+In the {{namespace}} namespace, Create a busybox pod that runs i=0; while true; do echo "$i: $(date)"; i=$((i+1)); sleep 1; done. Check its logs

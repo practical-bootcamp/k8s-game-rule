@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  namespace: {{namespace}}
+spec:
+  securityContext:
+    runAsUser: {{value1}}
+  containers:
+  - name: nginx
+    image: nginx

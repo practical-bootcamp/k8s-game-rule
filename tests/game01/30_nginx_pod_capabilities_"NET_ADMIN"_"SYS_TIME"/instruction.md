@@ -1,1 +1,0 @@
-Deploy the YAML for an nginx pod that has the capabilities "NET_ADMIN", "SYS_TIME" added to its single container

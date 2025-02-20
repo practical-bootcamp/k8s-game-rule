@@ -1,1 +1,1 @@
-Create ResourceQuota in namespace one with hard requests cpu=1, memory=1Gi and hard limits cpu=2, memory=2Gi.
+Create ResourceQuota in namespace {{namespace}} with hard requests cpu=1, memory=1Gi and hard limits cpu=2, memory=2Gi.
