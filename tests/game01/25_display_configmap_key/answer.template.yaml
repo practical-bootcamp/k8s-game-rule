@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: special-configmap
+  namespace: {{namespace}}
+data:
+  special: {{value1}}
