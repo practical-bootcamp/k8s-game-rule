@@ -1,6 +1,6 @@
+import base64
 import json
 import logging
-import base64
 
 from tests.helper.k8s_client_helper import configure_k8s_client
 from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
@@ -12,8 +12,12 @@ class TestCheck:
         namespace = json_input["namespace"]
         secret_name = "ilovek8s"
 
-        logging.info(f"Using namespace: {namespace}")
-        logging.info(f"Checking Secret '{secret_name}' in namespace '{namespace}' using client")
+        logging.info("Using namespace: %s", namespace)
+        logging.info(
+            "Checking Secret '%s' in namespace '%s' using client",
+            secret_name,
+            namespace,
+        )
 
         # 验证 Secret
         try:
@@ -21,13 +25,15 @@ class TestCheck:
                 name=secret_name, namespace=namespace
             )
         except Exception as e:
-            logging.error(f"Failed to get Secret '{secret_name}': {str(e)}")
+            logging.error("Failed to get Secret '%s': %s", secret_name, str(e))
             assert False, f"Failed to get Secret '{secret_name}': {str(e)}"
 
         # 验证 Secret 中的 API_KEY 值
         api_key_value = base64.b64decode(secret.data["API_KEY"]).decode()
-        assert api_key_value == "ilovek8s", f"Expected API_KEY to be 'ilovek8s', but got '{api_key_value}'."
-        logging.info(f"Secret '{secret_name}' has the correct API_KEY value.")
+        assert (
+            api_key_value == "ilovek8s"
+        ), f"Expected API_KEY to be 'ilovek8s', but got '{api_key_value}'."
+        logging.info("Secret '%s' has the correct API_KEY value.", secret_name)
 
     def test_002_check_secret_kubectl(self, json_input):
         logging.debug("Starting test_002_check_secret_kubectl")
@@ -37,8 +43,12 @@ class TestCheck:
         namespace = json_input["namespace"]
         secret_name = "ilovek8s"
 
-        logging.info(f"Using namespace: {namespace}")
-        logging.info(f"Checking Secret '{secret_name}' in namespace '{namespace}' using kubectl")
+        logging.info("Using namespace: %s", namespace)
+        logging.info(
+            "Checking Secret '%s' in namespace '%s' using kubectl",
+            secret_name,
+            namespace,
+        )
 
         # 使用 kubectl 获取 Secret
         command = f"kubectl get secret {secret_name} -n {namespace} -o json"
@@ -54,5 +64,7 @@ class TestCheck:
 
         # 验证 Secret 中的 API_KEY 值
         api_key_value = base64.b64decode(secret["data"]["API_KEY"]).decode()
-        assert api_key_value == "ilovek8s", f"Expected API_KEY to be 'ilovek8s', but got '{api_key_value}'."
-        logging.info(f"Secret '{secret_name}' has the correct API_KEY value.")
+        assert (
+            api_key_value == "ilovek8s"
+        ), f"Expected API_KEY to be 'ilovek8s', but got '{api_key_value}'."
+        logging.info("Secret '%s' has the correct API_KEY value.", secret_name)

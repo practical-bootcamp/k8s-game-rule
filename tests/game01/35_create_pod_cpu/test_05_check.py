@@ -1,8 +1,6 @@
-import json
 import logging
 
 from tests.helper.k8s_client_helper import configure_k8s_client
-from tests.helper.kubectrl_helper import build_kube_config, run_kubectl_command
 
 
 class TestCheck:
