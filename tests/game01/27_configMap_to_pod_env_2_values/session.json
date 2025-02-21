@@ -1,6 +1,6 @@
 {
     "namespace": "{{random_name()}}{{random_number(1,10)}}{{student_id()}}",
     "configmap_name": "{{random_name()}}",
-    "value1":"{{random_name()}}",
-    "value2":"{{random_name()}}"
+    "value1": "{{random_name()}}",
+    "value2": "{{random_name()}}"
 }

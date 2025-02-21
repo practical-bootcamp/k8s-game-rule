@@ -1,3 +1,4 @@
+import base64
 import json
 import logging
 import os
@@ -16,10 +17,15 @@ def random_number(from_number: int, to_number: int) -> str:
     return str(random.randint(from_number, to_number))
 
 
+def base64_encode(value: str) -> str:
+    return base64.b64encode(value.encode()).decode()
+
+
 func_dict = {
     "student_id": lambda: "123456789",
     "random_name": random_name,
     "random_number": random_number,
+    "base64_encode": base64_encode,
 }
 
 

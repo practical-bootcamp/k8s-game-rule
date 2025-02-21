@@ -1,0 +1,1 @@
+In the '{{namespace}}' namespace, create limits pod memory to a max of 500Mi and min of 100Mi.
