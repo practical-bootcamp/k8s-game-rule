@@ -1,0 +1,1 @@
+In the {{namespace}} namespace, Create a secret called mysecret with the values password={{value1}}

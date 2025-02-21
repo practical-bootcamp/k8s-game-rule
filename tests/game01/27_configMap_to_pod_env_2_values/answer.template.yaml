@@ -1,38 +1,38 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: {{namespace}}
+  name: {{ namespace }}
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{configmap_name}}
-  namespace: {{namespace}}
+  name: {{ configmap_name }}
+  namespace: {{ namespace }}
 data:
-  var6: {{value1}}
-  var7: {{value2}}
+  var6: {{ value1 }}
+  var7: {{ value2 }}
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: nginx
-  namespace: {{namespace}}
+  namespace: {{ namespace }}
 spec:
   containers:
-  - name: nginx
-    image: nginx:latest
-    resources:
-      limits:
-        memory: "128Mi"
-        cpu: "500m"
-    env:
-    - name: var6
-      valueFrom:
-        configMapKeyRef:
-          name: {{configmap_name}}
-          key: var6
-    - name: var7
-      valueFrom:
-        configMapKeyRef:
-          name: {{configmap_name}}
-          key: var7
+    - name: nginx
+      image: nginx:latest
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      env:
+        - name: var6
+          valueFrom:
+            configMapKeyRef:
+              name: {{ configmap_name }}
+              key: var6
+        - name: var7
+          valueFrom:
+            configMapKeyRef:
+              name: {{ configmap_name }}
+              key: var7
