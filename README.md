@@ -31,6 +31,22 @@ Change .env
 SKIP_ANSWER_TESTS=True
 ```
 
+## For Game Testing
+You can load the session from AWS DynamoDB.
+Set the token with CLI 
+```
+aws configure
+aws configure set aws_session_token <Session Token>
+```
+Change .env 
+```
+SESSION_FROM_DYNAMODB=True
+SESSION_TABLE_NAME=k8s-grader-api-SessionTable-XXXX
+EMAIL=abcd@vtc.edu.hk
+```
+SESSION_TABLE_NAME is the grader from SessionTable.
+EMAIL is the testing account email.
+
 ## Running test in command line
 Run all tasks
 ```
