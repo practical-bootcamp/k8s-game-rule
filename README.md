@@ -33,11 +33,13 @@ SKIP_ANSWER_TESTS=True
 
 ## For Game Testing
 You can load the session from AWS DynamoDB.
-Set the token with CLI 
+Set the token with CLI.
+Region us-east-1 and output json
 ```
 aws configure
 aws configure set aws_session_token <Session Token>
 ```
+
 Change .env 
 ```
 SESSION_FROM_DYNAMODB=True
